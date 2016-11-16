@@ -195,6 +195,22 @@ def main(argv):
     if not os.path.exists('exp'):
         os.makedirs('exp')
 
+    total_parameters = 0
+    for variable in model.trainable_variables():
+        # shape is an array of tf.Dimension
+        shape = variable.get_shape()
+        print(shape)
+        print(len(shape))
+        variable_parametes = 1
+        for dim in shape:
+            print(dim)
+            variable_parametes *= dim.value
+        print(variable_parametes)
+        total_parameters += variable_parametes
+    print(total_parameters)
+
+
+
     model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epochs,
               verbose=1, validation_data=(X_valid, Y_valid),callbacks=[history,checkpointer,earlystopping])
 

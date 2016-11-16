@@ -4,7 +4,7 @@ batch_size: 500
 clipnorm: 0
 hidden_units: 40
 learning_rate: 0.001
-learning_rate_natGrad : None
+learning_rate_natGrad : 0
 model_impl: complex_RNN
 unitary_impl : full_natGradRMS
 nb_epochs: 200

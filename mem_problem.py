@@ -29,6 +29,7 @@ from keras.optimizers import RMSprop
 from keras.utils import np_utils
 from custom_layers import uRNN,complex_RNN_wrapper
 from custom_optimizers import RMSprop_and_natGrad
+import theano
 
 class LossHistory(keras.callbacks.Callback):
     def __init__(self, histfile):
@@ -48,7 +49,7 @@ class LossHistory(keras.callbacks.Callback):
         self.val_loss.append(logs.get('val_loss'))
         self.val_acc.append(logs.get('val_acc'))
         cPickle.dump({'train_loss' : self.train_loss, 'train_acc' : self.train_acc, 'val_loss': self.val_loss, 'val_acc' : self.val_acc}, open(self.histfile, 'wb'))     
-        
+
 def generate_data(time_steps, n_data, n_sequence):
     seq = np.random.randint(1, high=9, size=(n_data, n_sequence))
     zeros1 = np.zeros((n_data, time_steps-1))
@@ -121,13 +122,12 @@ def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, 
 
     gradient_clipping = np.float32(1)
 
-    if (model == 'LSTM'):    
+    if (model_impl=='complex_RNN'):
         model = Sequential()
-        model.add(LSTM(hidden_units,
-                       return_sequences=False,
-                       input_shape=s_train_x.shape[1:]))
-        model.add(Dense(nb_classes))
-        model.add(Activation('softmax'))     
+        model.add(complex_RNN_wrapper(output_dim=nb_classes,
+                              hidden_dim=hidden_units,
+                              unitary_impl=unitary_impl,
+                              input_shape=X_train.shape[1:])) 
 
     rmsprop = RMSprop_and_natGrad(lr=learning_rate,clipnorm=clipnorm,lr_natGrad=learning_rate_natGrad)
     model.compile(loss='categorical_crossentropy',

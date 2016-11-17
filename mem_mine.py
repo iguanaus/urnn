@@ -21,7 +21,7 @@ from keras.optimizers import RMSprop
 from keras.utils import np_utils
 from custom_layers import uRNN,complex_RNN_wrapper
 from custom_optimizers import RMSprop_and_natGrad
-
+import theano
 
 class LossHistory(keras.callbacks.Callback):
     def __init__(self, histfile):

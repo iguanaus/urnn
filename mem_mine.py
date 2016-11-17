@@ -139,14 +139,26 @@ def main(argv):
     out_every_t = True
     loss_function = 'MSE'
 
+    train_data_size = 20000
+    test_data_size = 128
+    T = 1
+    input_len = 2 
+    category_size = 2 
+
     num_batches = int(n_train / n_batch)
     #data, data_param = copyingData.copyingProblemData(training_data_size, testing_data_size, \
     #        T, input_len, category_size)
   
 
     # --- Create data --------------------
-    train_x, train_y = generate_data(time_steps, n_train, n_sequence)
-    test_x, test_y = generate_data(time_steps, n_test, n_sequence)
+
+    data_set, data_param = copyingProblemData(train_data_size,test_data_size,T,input_len,category_size)
+
+    train_x = data_set['train']['Input']
+    train_y = data_set['train']['Output']
+
+    test_x = data_set['test']['Input']
+    test_y = data_set['test']['Output']
 
     s_train_x = theano.shared(train_x)
     s_train_y = theano.shared(train_y)
@@ -164,7 +176,10 @@ def main(argv):
         model.add(complex_RNN_wrapper(output_dim=nb_classes,
                               hidden_dim=hidden_units,
                               unitary_impl=unitary_impl,
-                              input_shape=X_train.shape[1:])) 
+                              input_shape=train_x.shape[1:])) 
+        model.add(Dense(nb_classes))
+        #Hopefully this will softmax each.
+        model.add(Activation('softmax'))
 
 
     #Setting up the model

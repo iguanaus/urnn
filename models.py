@@ -900,12 +900,12 @@ def complex_RNN(n_input, n_hidden, n_output, input_type='real', out_every_t=Fals
             sequences = [x, T.tile(theano.shared(np.zeros((1,1), dtype=theano.config.floatX)), [x.shape[0], 1, 1]), T.tile(theano.shared(np.ones((1,1),dtype=theano.config.floatX)),[x.shape[0], 1, 1])]
 
     outputs_info=[h_0_batch, theano.shared(np.float32(0.0)), theano.shared(np.float32(0.0))]
-    
+    print "Scanning...." 
     [hidden_states_all_layers, cost_steps, acc_steps], updates = theano.scan(fn=recurrence,
                                                                       sequences=sequences,
                                                                       non_sequences=non_sequences,
                                                                       outputs_info=outputs_info)
-
+    print "DoneScanning"
     # get hidden states of last layer
     hidden_states = hidden_states_all_layers[:,:,(n_layers-1)*2*n_hidden:]
 

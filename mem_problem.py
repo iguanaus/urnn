@@ -30,7 +30,25 @@ from keras.utils import np_utils
 from custom_layers import uRNN,complex_RNN_wrapper
 from custom_optimizers import RMSprop_and_natGrad
 
+class LossHistory(keras.callbacks.Callback):
+    def __init__(self, histfile):
+        self.histfile=histfile
+    
+    def on_train_begin(self, logs={}):
+        self.train_loss = []
+        self.train_acc  = []
+        self.val_loss   = []
+        self.val_acc    = []
 
+    def on_batch_end(self, batch, logs={}):
+        self.train_loss.append(logs.get('loss'))
+        self.train_acc.append(logs.get('acc'))
+
+    def on_epoch_end(self, epoch, logs={}):
+        self.val_loss.append(logs.get('val_loss'))
+        self.val_acc.append(logs.get('val_acc'))
+        cPickle.dump({'train_loss' : self.train_loss, 'train_acc' : self.train_acc, 'val_loss': self.val_loss, 'val_acc' : self.val_acc}, open(self.histfile, 'wb'))     
+        
 def generate_data(time_steps, n_data, n_sequence):
     seq = np.random.randint(1, high=9, size=(n_data, n_sequence))
     zeros1 = np.zeros((n_data, time_steps-1))
@@ -48,10 +66,10 @@ def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, 
      config={'learning_rate' : 1e-4,
             'learning_rate_natGrad' : None,
             'clipnorm' : 1.0,
-            'batch_size' : 32,
+            'batch_size' : 128,
             'nb_epochs' : 200,
-            'patience' : 3,
-            'hidden_units' : 100,
+            'patience' : 30,
+            'hidden_units' : 40, #
             'model_impl' : 'complex_RNN',
             'unitary_impl' : 'ASB2016',
             'histfile' : 'exp/history_mnist_default',

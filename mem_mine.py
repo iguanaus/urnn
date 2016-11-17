@@ -7,7 +7,7 @@ from __future__ import print_function
 import os,sys,getopt
 import yaml
 import cPickle
-
+from random import shuffle
 import numpy as np
 np.random.seed(314159)  # for reproducibility
 
@@ -87,11 +87,11 @@ def copyingProblemData(training_data_size, testing_data_size, \
         data_input.append(input_element)
         data_output.append(output_element)
 
-    train_input = data_input[0:training_data_size]
-    train_output = data_output[0:training_data_size]
+    train_input = np.array(data_input[0:training_data_size])
+    train_output = np.array(data_output[0:training_data_size])
 
-    test_input = data_input[-testing_data_size: -1]
-    test_output = data_output[-testing_data_size: -1]
+    test_input = np.array(data_input[-testing_data_size: -1])
+    test_output = np.array(data_output[-testing_data_size: -1])
 
     data = {'train': {'Input': train_input, 'Output': train_output}, \
             'test': {'Input': test_input, 'Output': test_output}}
@@ -127,24 +127,31 @@ def main(argv):
     n_sequence = 10
     n_train = int(1e5)
     n_test = int(1e4)
-    
+   
+
+    batch_size = 10
+    nb_epochs = 5 
     n_batch = 5000
     n_iter = 5000
     n_hidden = 40
     time_steps = 50
     learning_rate = 0.001
     savefile = "testing.txt"
-    model = "LSTM"
+    model = "complex_RNN"
     input_type = 'real'
     out_every_t = True
     loss_function = 'MSE'
-
-    train_data_size = 20000
+    unitary_impl = "ASB2016" 
+    clipnorm = 1
+    learning_rate_natGrad = None
+    histfile = 'exp/history_mnist_default'
+    patience = 10
+    train_data_size = 2000
     test_data_size = 128
     T = 1
     input_len = 2 
     category_size = 2 
-
+    nb_classes=8
     num_batches = int(n_train / n_batch)
     #data, data_param = copyingData.copyingProblemData(training_data_size, testing_data_size, \
     #        T, input_len, category_size)
@@ -165,21 +172,21 @@ def main(argv):
 
     s_test_x = theano.shared(test_x)
     s_test_y = theano.shared(test_y)
-
+    print(train_x.shape)
     
     # --- Create theano graph and compute gradients ----------------------
 
     gradient_clipping = np.float32(1)
 
-    if (model_impl=='complex_RNN'):
+    if (model=='complex_RNN'):
         model = Sequential()
         model.add(complex_RNN_wrapper(output_dim=nb_classes,
-                              hidden_dim=hidden_units,
+                              hidden_dim=n_hidden,
                               unitary_impl=unitary_impl,
                               input_shape=train_x.shape[1:])) 
-        model.add(Dense(nb_classes))
+        #model.add(Dense(nb_classes))
         #Hopefully this will softmax each.
-        model.add(Activation('softmax'))
+        #model.add(Activation('softmax'))
 
 
     #Setting up the model
@@ -189,7 +196,7 @@ def main(argv):
                   metrics=['accuracy'])
     history=LossHistory(histfile)
     checkpointer = keras.callbacks.ModelCheckpoint(filepath=savefile, verbose=1, save_best_only=True)
-    earlystopping=keras.callbacks.EarlyStopping(monitor='val_loss', patience=config['patience'], verbose=1, mode='auto') 
+    earlystopping=keras.callbacks.EarlyStopping(monitor='val_loss', patience=patience, verbose=1, mode='auto') 
 
     #make sure the experiment directory to hold results exists
     if not os.path.exists('exp'):
@@ -198,8 +205,9 @@ def main(argv):
     print (model.summary())
 
     #Now for the actual methods. 
-    model.fit(s_train_x, s_train_y, batch_size=batch_size, nb_epoch=nb_epochs,
-              verbose=1,callbacks=[history,checkpointer,earlystopping])
+    print (s_train_x)
+    print (s_train_y)
+    model.fit(train_x, train_y, batch_size=batch_size, nb_epoch=nb_epochs,verbose=1,callbacks=[history,checkpointer,earlystopping])
 
     scores = model.evaluate(s_train_x, s_train_y, verbose=0)
 

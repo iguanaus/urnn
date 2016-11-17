@@ -159,11 +159,12 @@ def main(argv):
 
     gradient_clipping = np.float32(1)
 
-    if (model == 'LSTM'):
+    if (model_impl=='complex_RNN'):
         model = Sequential()
-        model.add(LSTM(n_input, n_hidden, n_output, input_type=input_type,
-             out_every_t=out_every_t, loss_function=loss_function))
-        #model.add(Dense(nb_classes))
+        model.add(complex_RNN_wrapper(output_dim=nb_classes,
+                              hidden_dim=hidden_units,
+                              unitary_impl=unitary_impl,
+                              input_shape=X_train.shape[1:])) 
 
 
     #Setting up the model

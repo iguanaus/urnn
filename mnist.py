@@ -42,8 +42,8 @@ class LossHistory(keras.callbacks.Callback):
         self.val_acc.append(logs.get('val_acc'))
         cPickle.dump({'train_loss' : self.train_loss, 'train_acc' : self.train_acc, 'val_loss': self.val_loss, 'val_acc' : self.val_acc}, open(self.histfile, 'wb'))     
 
-def main(argv):
 
+def main(argv):
     config={'learning_rate' : 1e-4,
             'learning_rate_natGrad' : None,
             'clipnorm' : 1.0,
@@ -194,11 +194,6 @@ def main(argv):
     #make sure the experiment directory to hold results exists
     if not os.path.exists('exp'):
         os.makedirs('exp')
-
-    print (model.summary())
-
-
-
 
     model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epochs,
               verbose=1, validation_data=(X_valid, Y_valid),callbacks=[history,checkpointer,earlystopping])

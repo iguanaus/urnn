@@ -72,36 +72,52 @@ def oneSequence(ind, T, input_len, category_size):
 #This constructs the copy problem data
 #It returns a train and a test set. 
 
-def copyingProblemData(training_data_size, testing_data_size, \
-                        T, input_len, category_size):
+def copyingProblemData(training_size,test_size,T,input_len,cat_size):
+    #Okay so in this I want a random integer between 1 and a higher number, but with no repeats. I will make a class for this, and then just store values in a dict. 
     N = training_data_size/(category_size ** input_len)
-    shuffle_list = range(category_size ** input_len) * (N+1)
-    shuffle(shuffle_list)
+    numCountLimit = N+1
+    #os.exit()
+    alreadyNums = {}
+    train_input = []
+    train_output = []
+    test_input = []
+    test_output = []
+    while True:
+        myint = random.randint(1,cat_size**input_len)
+        val = alreadyNums.get(myint,0)
+        #print "Storing val..",val
+        if val == 0:
+            alreadyNums[myint] = 1
+        else:
+            alreadyNums[myint] += 1
+            #alreadyNums[myint] += alreadyNums.get(myint,0)
+        if (alreadyNums[myint]<=numCountLimit):
+            input_element, output_element = \
+                 oneSequence(myint, T, input_len, cat_size)
+            #print ("Input")
+            #print(input_element)
+            #print(output_element)
+            if len(train_input)<training_size:
+                train_input.append(input_element)
+                train_output.append(output_element)
+            elif len(test_input)<test_size:
+                test_input.append(input_element)
+                test_output.append(output_element)
+            else:
+                break
 
-    data_input = []
-    data_output = []
-
-    for ind in shuffle_list:
-        input_element, output_element = \
-             oneSequence(ind, T, input_len, category_size)
-        data_input.append(input_element)
-        data_output.append(output_element)
-
-    train_input = np.array(data_input[0:training_data_size])
-    train_output = np.array(data_output[0:training_data_size])
-
-    test_input = np.array(data_input[-testing_data_size: -1])
-    test_output = np.array(data_output[-testing_data_size: -1])
+        else:
+            continue
 
     data = {'train': {'Input': train_input, 'Output': train_output}, \
             'test': {'Input': test_input, 'Output': test_output}}
 
     data_param = {
         'training_data_size': training_data_size,\
-        'testing_data_size': testing_data_size,\
+        'testing_data_size': test_size,\
         'T': T, \
         'input_len': input_len,\
-        'category_size': category_size
+        'category_size': cat_size
     }
 
     return data, data_param

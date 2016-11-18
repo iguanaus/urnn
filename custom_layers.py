@@ -434,8 +434,8 @@ class complex_RNN_wrapper(Layer):
 
     def build(self, input_shape):
         print "BUilding..."
-	print input_shape[-1]
-	self.input_dim = input_shape[-1]
+	    print input_shape[-1]
+	    self.input_dim = input_shape[-1]
 
     def call(self, x, mask=None):
         input_dim = self.input_dim

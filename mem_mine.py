@@ -184,9 +184,9 @@ def main(argv):
                               hidden_dim=n_hidden,
                               unitary_impl=unitary_impl,
                               input_shape=train_x.shape[1:])) 
-        #model.add(Dense(nb_classes))
+        model.add(TimeDistributedDense(nb_classes))
         #Hopefully this will softmax each.
-        #model.add(Activation('softmax'))
+        model.add(Activation('softmax'))
 
 
     #Setting up the model
@@ -205,9 +205,9 @@ def main(argv):
     print (model.summary())
 
     #Now for the actual methods. 
-    print (s_train_x)
-    print (s_train_y)
-    model.train_on_batch(train_x, train_y, nb_epoch=nb_epochs,verbose=1,callbacks=[history,checkpointer,earlystopping])
+    print ("X:",train_x.shape)
+    print ("Y:",train_y.shape)
+    model.train_on_batch(train_x, train_y, nb_epoch=nb_epochs,verbose=1)
 
     scores = model.evaluate(s_train_x, s_train_y, verbose=0)
 

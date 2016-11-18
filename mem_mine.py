@@ -207,7 +207,7 @@ def main(argv):
     #Now for the actual methods. 
     print (s_train_x)
     print (s_train_y)
-    model.fit(train_x, train_y, batch_size=batch_size, nb_epoch=nb_epochs,verbose=1,callbacks=[history,checkpointer,earlystopping])
+    model.train_on_batch(train_x, train_y, nb_epoch=nb_epochs,verbose=1,callbacks=[history,checkpointer,earlystopping])
 
     scores = model.evaluate(s_train_x, s_train_y, verbose=0)
 

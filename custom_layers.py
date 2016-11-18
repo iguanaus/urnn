@@ -433,7 +433,9 @@ class complex_RNN_wrapper(Layer):
         super(complex_RNN_wrapper, self).__init__(**kwargs)
 
     def build(self, input_shape):
-        self.input_dim = input_shape[-1]
+        print "BUilding..."
+	print input_shape[-1]
+	self.input_dim = input_shape[-1]
 
     def call(self, x, mask=None):
         input_dim = self.input_dim

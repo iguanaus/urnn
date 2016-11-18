@@ -121,42 +121,31 @@ def generate_data(time_steps, n_data, n_sequence):
     
 def main(argv):
 
-    # --- Set data params ----------------
-    n_input = 10
-    n_output = 9
-    n_sequence = 10
-    n_train = int(1e5)
-    n_test = int(1e4)
-   
 
-    batch_size = 5
-    nb_epochs = 2
-    n_batch = 5000
-    n_iter = 5000
-    n_hidden = 40
-    time_steps = 50
+    batch_size = 16
+    nb_epochs = 5
+
+    n_hidden = 128
+    patience = 100
+    train_data_size = 100000
+    test_data_size = 10000
+    T = 1000 #Delay length
+    input_len = 10  #Input length
+    category_size = 8 #Category size
+
     learning_rate = 0.001
+    learning_rate_natGrad = None
+    clipnorm = None
+    
     savefile = "testing.txt"
     model = "uRNN_keras"
-    input_type = 'real'
     out_every_t = True
-    loss_function = 'MSE'
-    unitary_impl = "ASB2016" 
-    clipnorm = 1
-    learning_rate_natGrad = None
+    unitary_impl = "ASB2016" #full, otherwise
+    unitary_init = 'ASB2016' #or it can be svd?, or just use ASB2016. 
+       
     histfile = 'exp/history_mnist_default'
-    patience = 10
-    train_data_size = 200
-    test_data_size = 12
-    T = 1
-    input_len = 2 
-    category_size = 2 
-    nb_classes=category_size+2
-    num_batches = int(n_train / n_batch)
-    #data, data_param = copyingData.copyingProblemData(training_data_size, testing_data_size, \
-    #        T, input_len, category_size)
-  
 
+    nb_classes=category_size+2
     # --- Create data --------------------
 
     data_set, data_param = copyingProblemData(train_data_size,test_data_size,T,input_len,category_size)
@@ -176,37 +165,30 @@ def main(argv):
     print("Classes:",nb_classes) 
     # --- Create theano graph and compute gradients ----------------------
 
-    gradient_clipping = np.float32(1)
+    
 
     if (model=='uRNN_keras'):
-	unitary_init = 'ASB2016'
-	unitary_impl = 'ASB2016'
-	epsilon = 1e-5
-	model = Sequential()
-	model.add(uRNN(output_dim=nb_classes,inner_init=unitary_init,unitary_impl=unitary_impl,input_shape=train_x.shape[1:],consume_less='cpu',epsilon=epsilon,return_sequences=True))
-	model.add(TimeDistributedDense(nb_classes))
-	model.add(Activation('softmax'))
+    	epsilon = 1e-5
+    	model = Sequential()
+    	model.add(uRNN(output_dim=nb_classes,inner_init=unitary_init,unitary_impl=unitary_impl,input_shape=train_x.shape[1:],consume_less='cpu',epsilon=epsilon,return_sequences=True))
+    	model.add(TimeDistributedDense(nb_classes))
+    	model.add(Activation('softmax'))
 
 
     if (model=='complex_RNN'):
+        #This is currently broke still
         model = Sequential()
-        #model.add(LSTM(n_hidden,return_sequences=True,input_shape=train_x.shape[1:]))
-	model.add(complex_RNN_wrapper(output_dim=nb_classes,
+        model.add(complex_RNN_wrapper(output_dim=nb_classes,
                               hidden_dim=n_hidden,
                               unitary_impl=unitary_impl,
                               input_shape=train_x.shape[1:])) 
-        #model.add(TimeDistributedDense(nb_classes))
-
-        #Hopefully this will softmax each.
         model.add(Activation('softmax'))
 
     if (model=='LSTM'):
-	model = Sequential()
-	model.add(LSTM(n_hiddne,return_sequences=True,input_shape=train_x.shape[1:]))
-	model.add(TimeDistributedDense(nb_classes))
-	model.add(Activation('softmax'))
-
-
+    	model = Sequential()
+    	model.add(LSTM(n_hiddne,return_sequences=True,input_shape=train_x.shape[1:]))
+    	model.add(TimeDistributedDense(nb_classes))
+    	model.add(Activation('softmax'))
 
     #Setting up the model
     rmsprop = RMSprop_and_natGrad(lr=learning_rate,clipnorm=clipnorm,lr_natGrad=learning_rate_natGrad)

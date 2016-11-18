@@ -129,7 +129,7 @@ def main(argv):
     n_test = int(1e4)
    
 
-    batch_size = 10
+    batch_size = 5
     nb_epochs = 5 
     n_batch = 5000
     n_iter = 5000
@@ -146,12 +146,12 @@ def main(argv):
     learning_rate_natGrad = None
     histfile = 'exp/history_mnist_default'
     patience = 10
-    train_data_size = 2000
-    test_data_size = 128
+    train_data_size = 200
+    test_data_size = 12
     T = 1
     input_len = 2 
     category_size = 2 
-    nb_classes=8
+    nb_classes=category_size+2
     num_batches = int(n_train / n_batch)
     #data, data_param = copyingData.copyingProblemData(training_data_size, testing_data_size, \
     #        T, input_len, category_size)
@@ -173,17 +173,18 @@ def main(argv):
     s_test_x = theano.shared(test_x)
     s_test_y = theano.shared(test_y)
     print(train_x.shape)
-    
+    print("Classes:",nb_classes) 
     # --- Create theano graph and compute gradients ----------------------
 
     gradient_clipping = np.float32(1)
 
     if (model=='complex_RNN'):
         model = Sequential()
-        model.add(complex_RNN_wrapper(output_dim=nb_classes,
-                              hidden_dim=n_hidden,
-                              unitary_impl=unitary_impl,
-                              input_shape=train_x.shape[1:])) 
+        model.add(LSTM(n_hidden,return_sequences=True,input_shape=train_x.shape[1:]))
+	#model.add(complex_RNN_wrapper(output_dim=nb_classes,
+        #                      hidden_dim=n_hidden,
+        #                      unitary_impl=unitary_impl,
+        #                      input_shape=train_x.shape[1:])) 
         model.add(TimeDistributedDense(nb_classes))
 
         #Hopefully this will softmax each.
@@ -208,7 +209,7 @@ def main(argv):
     #Now for the actual methods. 
     print ("X:",train_x.shape)
     print ("Y:",train_y.shape)
-    model.train_on_batch(train_x, train_y, nb_epoch=nb_epochs,verbose=1)
+    model.fit(train_x, train_y, nb_epoch=nb_epochs,verbose=1,batch_size=batch_size,validation_data=(test_x,test_y),callbacks=[history,checkpointer,earlystopping])
 
     scores = model.evaluate(s_train_x, s_train_y, verbose=0)
 

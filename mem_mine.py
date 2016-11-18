@@ -3,7 +3,7 @@
 '''
 
 from __future__ import print_function
-
+import random
 import os,sys,getopt
 import yaml
 import cPickle
@@ -74,7 +74,7 @@ def oneSequence(ind, T, input_len, category_size):
 
 def copyingProblemData(training_size,test_size,T,input_len,cat_size):
     #Okay so in this I want a random integer between 1 and a higher number, but with no repeats. I will make a class for this, and then just store values in a dict. 
-    N = training_data_size/(category_size ** input_len)
+    N = training_size/(cat_size ** input_len)
     numCountLimit = N+1
     #os.exit()
     alreadyNums = {}
@@ -98,10 +98,10 @@ def copyingProblemData(training_size,test_size,T,input_len,cat_size):
             #print(input_element)
             #print(output_element)
             if len(train_input)<training_size:
-                train_input.append(input_element)
+		train_input.append(input_element)
                 train_output.append(output_element)
             elif len(test_input)<test_size:
-                test_input.append(input_element)
+		test_input.append(input_element)
                 test_output.append(output_element)
             else:
                 break
@@ -113,7 +113,7 @@ def copyingProblemData(training_size,test_size,T,input_len,cat_size):
             'test': {'Input': test_input, 'Output': test_output}}
 
     data_param = {
-        'training_data_size': training_data_size,\
+        'training_data_size': training_size,\
         'testing_data_size': test_size,\
         'T': T, \
         'input_len': input_len,\
@@ -145,7 +145,7 @@ def main(argv):
     patience = 100
     train_data_size = 100000
     test_data_size = 10000
-    T = 1000 #Delay length
+    T = 100 #Delay length
     input_len = 10  #Input length
     category_size = 8 #Category size
 
@@ -165,12 +165,12 @@ def main(argv):
     # --- Create data --------------------
 
     data_set, data_param = copyingProblemData(train_data_size,test_data_size,T,input_len,category_size)
+    print("Done constructing data....")
+    train_x = np.array(data_set['train']['Input'])
+    train_y = np.array(data_set['train']['Output'])
 
-    train_x = data_set['train']['Input']
-    train_y = data_set['train']['Output']
-
-    test_x = data_set['test']['Input']
-    test_y = data_set['test']['Output']
+    test_x = np.array(data_set['test']['Input'])
+    test_y = np.array(data_set['test']['Output'])
 
     s_train_x = theano.shared(train_x)
     s_train_y = theano.shared(train_y)

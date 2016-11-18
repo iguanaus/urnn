@@ -15,11 +15,11 @@ import keras.callbacks
 from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Dense, Activation,LSTM,TimeDistributed
-from keras.layers import SimpleRNN
+from keras.layers import SimpleRNN , TimeDistributedDense
 from keras.initializations import normal, identity
 from keras.optimizers import RMSprop
 from keras.utils import np_utils
-from custom_layers import uRNN,complex_RNN_wrapper
+from custom_layers import uRNN,complex_RNN_wrapper 
 from custom_optimizers import RMSprop_and_natGrad
 import theano
 
@@ -185,6 +185,7 @@ def main(argv):
                               unitary_impl=unitary_impl,
                               input_shape=train_x.shape[1:])) 
         model.add(TimeDistributedDense(nb_classes))
+
         #Hopefully this will softmax each.
         model.add(Activation('softmax'))
 

@@ -42,16 +42,7 @@ class LossHistory(keras.callbacks.Callback):
         self.val_acc.append(logs.get('val_acc'))
         cPickle.dump({'train_loss' : self.train_loss, 'train_acc' : self.train_acc, 'val_loss': self.val_loss, 'val_acc' : self.val_acc}, open(self.histfile, 'wb'))     
 
-
-
 def main(argv):
-
-
-
-
-
-
-
 
     config={'learning_rate' : 1e-4,
             'learning_rate_natGrad' : None,

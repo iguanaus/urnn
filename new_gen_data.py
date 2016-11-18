@@ -60,21 +60,20 @@ def oneSequence(ind, T, input_len, category_size):
     
     return input_element, output_element
 
-def copyProbData(training_size,test_size,T,input_len,cat_size):
-    print("DoneDone")
+def copyingProblemData(training_size,test_size,T,input_len,cat_size):
     #Okay so in this I want a random integer between 1 and a higher number, but with no repeats. I will make a class for this, and then just store values in a dict. 
     N = training_data_size/(category_size ** input_len)
     numCountLimit = N+1
-    print("You can have up to: " , numCountLimit)
     #os.exit()
     alreadyNums = {}
     train_input = []
     train_output = []
     test_input = []
     test_output = []
+    print "Limits created, while loop started.."
+    myupperval = cat_size**input_len
     while True:
-        myint = random.randint(1,cat_size**input_len)
-        print "Myint", myint
+        myint = random.randint(1,myupperval)
         val = alreadyNums.get(myint,0)
         #print "Storing val..",val
         if val == 0:
@@ -83,16 +82,17 @@ def copyProbData(training_size,test_size,T,input_len,cat_size):
         	alreadyNums[myint] += 1
 	        #alreadyNums[myint] += alreadyNums.get(myint,0)
         if (alreadyNums[myint]<=numCountLimit):
-            print "Adding it!"
             input_element, output_element = \
                  oneSequence(myint, T, input_len, cat_size)
             #print ("Input")
             #print(input_element)
             #print(output_element)
             if len(train_input)<training_size:
+                print("Filling test....", len(train_input)*1.0/training_size)
                 train_input.append(input_element)
                 train_output.append(output_element)
             elif len(test_input)<test_size:
+                print("Filling test....", len(test_input)*1.0/test_size)
                 test_input.append(input_element)
                 test_output.append(output_element)
             else:
@@ -123,12 +123,12 @@ def copyProbData(training_size,test_size,T,input_len,cat_size):
 if __name__ == "__main__":
     #test
     print('Running this will generate an example data set.')
-    training_data_size = 100
-    testing_data_size =  10
-    T = 5
-    input_len = 4
+    training_data_size = 100000
+    testing_data_size =  10000
+    T = 100
+    input_len = 10
     category_size = 8
-    data_set, data_param = copyProbData(training_data_size,testing_data_size,T,input_len,category_size)
+    data_set, data_param = copyingProblemData(training_data_size,testing_data_size,T,input_len,category_size)
     # data_set, data_param = copyingProblemData(100000, 1000, 100, 6, 8)
     print('Training Data:')
     print(np.array(data_set['train']['Input']).shape)

@@ -139,12 +139,12 @@ def main(argv):
 
 
     batch_size = 16
-    nb_epochs = 5
+    nb_epochs = 2
 
     n_hidden = 128
     patience = 100
-    train_data_size = 100000
-    test_data_size = 10000
+    train_data_size = 10000
+    test_data_size = 1000
     T = 100 #Delay length
     input_len = 10  #Input length
     category_size = 8 #Category size
@@ -186,7 +186,7 @@ def main(argv):
     if (model=='uRNN_keras'):
     	epsilon = 1e-5
     	model = Sequential()
-    	model.add(uRNN(output_dim=nb_classes,inner_init=unitary_init,unitary_impl=unitary_impl,input_shape=train_x.shape[1:],consume_less='cpu',epsilon=epsilon,return_sequences=True))
+    	model.add(uRNN(output_dim=n_hidden,inner_init=unitary_init,unitary_impl=unitary_impl,input_shape=train_x.shape[1:],consume_less='gpu',epsilon=epsilon,return_sequences=True))
     	model.add(TimeDistributedDense(nb_classes))
     	model.add(Activation('softmax'))
 

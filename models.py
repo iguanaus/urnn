@@ -917,13 +917,14 @@ def complex_RNN(n_input, n_hidden, n_output, input_type='real', out_every_t=Fals
    
         if flag_add_input_to_output:
             lin_output = lin_output + x
-
+    print "The lin output is: " , lin_output
     if not out_every_t:
         #TODO: here, if flag_use_mask is set, need to use a for-loop to select the desired time-step for each utterance
         lin_output = T.dot(hidden_states[-1,:,:], Un) + out_bias.dimshuffle('x', 0)
         z_t = None
         if loss_function == 'MSEplusL1':
             z_t = hidden_states[-1,:,:]
+	print "Y:",y
         costs = compute_cost_t(lin_output, loss_function, y, z_t=z_t, lam=lam)
         cost=costs[0]
         accuracy=costs[1]

@@ -440,8 +440,8 @@ class complex_RNN_wrapper(Layer):
     def call(self, x, mask=None):
         input_dim = self.input_dim
         input_type='real'
-        out_every_t=False
-        loss_function='MSE'
+        out_every_t=True#False
+        loss_function='CE_of_sum'
         output_type='real'
         flag_feed_forward=False
         flag_use_mask=False
@@ -459,8 +459,9 @@ class complex_RNN_wrapper(Layer):
         seed=1234
         x_spec=K.permute_dimensions(x,(1,0,2))
         inputs, parameters, costs = models.complex_RNN(input_dim, self.hidden_dim, self.output_dim, input_type=input_type,out_every_t=out_every_t, loss_function=loss_function,output_type=output_type,flag_feed_forward=flag_feed_forward,flag_return_lin_output=True,x_spec=x_spec,flag_use_mask=flag_use_mask,hidden_bias_mean=hidden_bias_mean,Wimpl=Wimpl,flag_return_hidden_states=True,n_layers=n_layers,seed=seed,hidden_bias_init=hidden_bias_init)
-
-        lin_output=costs[2]
+	print ("COsts:",costs)
+        print ("Lin Output: " , costs[2])
+	lin_output=costs[2]
         #self.hidden_states=costs[3]
 
         if (self.unitary_impl=='full'):

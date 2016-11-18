@@ -130,14 +130,14 @@ def main(argv):
    
 
     batch_size = 5
-    nb_epochs = 5 
+    nb_epochs = 2
     n_batch = 5000
     n_iter = 5000
     n_hidden = 40
     time_steps = 50
     learning_rate = 0.001
     savefile = "testing.txt"
-    model = "complex_RNN"
+    model = "uRNN_keras"
     input_type = 'real'
     out_every_t = True
     loss_function = 'MSE'
@@ -178,24 +178,39 @@ def main(argv):
 
     gradient_clipping = np.float32(1)
 
+    if (model=='uRNN_keras'):
+	unitary_init = 'ASB2016'
+	unitary_impl = 'ASB2016'
+	epsilon = 1e-5
+	model = Sequential()
+	model.add(uRNN(output_dim=nb_classes,inner_init=unitary_init,unitary_impl=unitary_impl,input_shape=train_x.shape[1:],consume_less='cpu',epsilon=epsilon,return_sequences=True))
+	model.add(TimeDistributedDense(nb_classes))
+	model.add(Activation('softmax'))
+
+
     if (model=='complex_RNN'):
         model = Sequential()
-        model.add(LSTM(n_hidden,return_sequences=True,input_shape=train_x.shape[1:]))
-	#model.add(complex_RNN_wrapper(output_dim=nb_classes,
-        #                      hidden_dim=n_hidden,
-        #                      unitary_impl=unitary_impl,
-        #                      input_shape=train_x.shape[1:])) 
-        model.add(TimeDistributedDense(nb_classes))
+        #model.add(LSTM(n_hidden,return_sequences=True,input_shape=train_x.shape[1:]))
+	model.add(complex_RNN_wrapper(output_dim=nb_classes,
+                              hidden_dim=n_hidden,
+                              unitary_impl=unitary_impl,
+                              input_shape=train_x.shape[1:])) 
+        #model.add(TimeDistributedDense(nb_classes))
 
         #Hopefully this will softmax each.
         model.add(Activation('softmax'))
 
+    if (model=='LSTM'):
+	model = Sequential()
+	model.add(LSTM(n_hiddne,return_sequences=True,input_shape=train_x.shape[1:]))
+	model.add(TimeDistributedDense(nb_classes))
+	model.add(Activation('softmax'))
+
+
 
     #Setting up the model
     rmsprop = RMSprop_and_natGrad(lr=learning_rate,clipnorm=clipnorm,lr_natGrad=learning_rate_natGrad)
-    model.compile(loss='categorical_crossentropy',
-                  optimizer=rmsprop,
-                  metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy', optimizer=rmsprop, metrics=['accuracy'])
     history=LossHistory(histfile)
     checkpointer = keras.callbacks.ModelCheckpoint(filepath=savefile, verbose=1, save_best_only=True)
     earlystopping=keras.callbacks.EarlyStopping(monitor='val_loss', patience=patience, verbose=1, mode='auto') 
@@ -210,7 +225,7 @@ def main(argv):
     print ("X:",train_x.shape)
     print ("Y:",train_y.shape)
     model.fit(train_x, train_y, nb_epoch=nb_epochs,verbose=1,batch_size=batch_size,validation_data=(test_x,test_y),callbacks=[history,checkpointer,earlystopping])
-
+    print ("Done fitting!")
     scores = model.evaluate(s_train_x, s_train_y, verbose=0)
 
     print('Test loss:', scores[0])

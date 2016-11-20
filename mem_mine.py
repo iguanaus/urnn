@@ -143,8 +143,8 @@ def main(argv):
 
     n_hidden = 40
     patience = 100
-    train_data_size = 1000000
-    test_data_size = 100000
+    train_data_size = 100000
+    test_data_size = 10000
     T = 100 #Delay length
     input_len = 10  #Input length
     category_size = 8 #Category size

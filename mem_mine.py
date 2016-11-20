@@ -138,13 +138,13 @@ def generate_data(time_steps, n_data, n_sequence):
 def main(argv):
 
 
-    batch_size = 16
-    nb_epochs = 2
+    batch_size = 128 
+    nb_epochs = 20
 
-    n_hidden = 128
+    n_hidden = 40
     patience = 100
-    train_data_size = 10000
-    test_data_size = 1000
+    train_data_size = 1000000
+    test_data_size = 100000
     T = 100 #Delay length
     input_len = 10  #Input length
     category_size = 8 #Category size
@@ -156,8 +156,8 @@ def main(argv):
     savefile = "testing.txt"
     model = "uRNN_keras"
     out_every_t = True
-    unitary_impl = "ASB2016" #full, otherwise
-    unitary_init = 'ASB2016' #or it can be svd?, or just use ASB2016. 
+    unitary_impl = "ASB2016"#ASB2016"#full"#ASB2016" #full, otherwise
+    unitary_init = 'ASB2016'#ASB2016' #or it can be svd?, or just use ASB2016. 
        
     histfile = 'exp/history_mnist_default'
 
@@ -168,7 +168,7 @@ def main(argv):
     print("Done constructing data....")
     train_x = np.array(data_set['train']['Input'])
     train_y = np.array(data_set['train']['Output'])
-
+    
     test_x = np.array(data_set['test']['Input'])
     test_y = np.array(data_set['test']['Output'])
 

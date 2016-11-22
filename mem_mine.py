@@ -144,7 +144,7 @@ def main(argv):
     n_hidden = 128
     patience = 100
     train_data_size = 10000
-    test_data_size = 1500
+    test_data_size = 5000
     T = 1000 #Delay length
     input_len = 10  #Input length
     category_size = 8 #Category size
@@ -156,7 +156,7 @@ def main(argv):
     savefile = "testing.txt"
     model = "uRNN_keras"
     out_every_t = True
-    unitary_impl = "full_natGradRMS"#ASB2016"#full"#ASB2016" #full, otherwise
+    unitary_impl = "full"#ASB2016"#full"#ASB2016" #full, otherwise
     unitary_init = 'ASB2016'#ASB2016' #or it can be svd?, or just use ASB2016. 
        
     histfile = 'exp/long_run'

@@ -139,19 +139,19 @@ def main(argv):
 
 
     batch_size = 128 
-    nb_epochs = 20
+    nb_epochs = 10
 
-    n_hidden = 40
+    n_hidden = 128
     patience = 100
-    train_data_size = 100000
-    test_data_size = 10000
-    T = 100 #Delay length
+    train_data_size = 10000
+    test_data_size = 1500
+    T = 1000 #Delay length
     input_len = 10  #Input length
     category_size = 8 #Category size
 
     learning_rate = 0.001
     learning_rate_natGrad = None
-    clipnorm = None
+    clipnorm = 1.0
     
     savefile = "testing.txt"
     model = "uRNN_keras"
@@ -159,7 +159,7 @@ def main(argv):
     unitary_impl = "full_natGradRMS"#ASB2016"#full"#ASB2016" #full, otherwise
     unitary_init = 'ASB2016'#ASB2016' #or it can be svd?, or just use ASB2016. 
        
-    histfile = 'exp/history_mnist_default'
+    histfile = 'exp/long_run'
 
     nb_classes=category_size+2
     # --- Create data --------------------
@@ -224,7 +224,7 @@ def main(argv):
     print ("Y:",train_y.shape)
     model.fit(train_x, train_y, nb_epoch=nb_epochs,verbose=1,batch_size=batch_size,validation_data=(test_x,test_y),callbacks=[history,checkpointer,earlystopping])
     print ("Done fitting!")
-    scores = model.evaluate(s_train_x, s_train_y, verbose=0)
+    scores = model.evaluate(train_x, train_y, verbose=0)
 
     print('Test loss:', scores[0])
     print('Test accuracy:', scores[1])

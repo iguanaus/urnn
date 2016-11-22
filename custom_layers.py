@@ -390,16 +390,25 @@ class uRNN(Recurrent):
         return constants
 
     def get_config(self):
-        config = {'output_dim': self.output_dim,
+        new_name = "hi"
+	second_name = "other_name"
+	config = {'output_dim':self.output_dim}
+	try:
+		new_name = self.inner_init.__name__
+		second_name = self.activation.__name__
+		config = {'output_dim': self.output_dim,
                   'init': self.init.__name__,
-                  'inner_init': self.inner_init.__name__,
-                  'activation': self.activation.__name__,
+                  'inner_init': new_name,
+                  'activation': second_name,
                   'W_regularizer': self.W_regularizer.get_config() if self.W_regularizer else None,
                   'U_regularizer': self.U_regularizer.get_config() if self.U_regularizer else None,
                   'b_regularizer': self.b_regularizer.get_config() if self.b_regularizer else None,
                   'dropout_W': self.dropout_W,
                   'dropout_U': self.dropout_U}
-        base_config = super(uRNN, self).get_config()
+	except:
+		pass
+        
+	base_config = super(uRNN, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))
 
 
@@ -426,7 +435,8 @@ class complex_RNN_wrapper(Layer):
     '''
     def __init__(self, output_dim, hidden_dim=None, unitary_impl='adhoc', **kwargs):
         self.output_dim = output_dim
-        if hidden_dim is None:
+        self.name = "myname"
+	if hidden_dim is None:
             hidden_dim = output_dim
         self.hidden_dim=hidden_dim
         self.unitary_impl=unitary_impl

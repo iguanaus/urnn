@@ -12,7 +12,7 @@ for t in 1000 2000; do
         echo "Running memory_problem experiment for N=$2 $1 with time_steps=$t"
         cmd="THEANO_FLAGS='device=gpu0' python2.7 -u memory_problem.py $niter ${batch_size} $2 $t 0.001 exp/memory_problem_$1_$3_$1_nhidden$2_t$t $1 categorical True CE $w_impl"
         echo $cmd
-        eval $cmd
+        #eval $cmd
         echo "Experiment took $SECONDS seconds."
     done
 done

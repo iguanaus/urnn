@@ -149,8 +149,8 @@ def main(argv):
     input_len = 10  #Input length
     category_size = 8 #Category size
 
-    learning_rate = 0.001
-    learning_rate_natGrad = None
+    learning_rate =         0.001
+    learning_rate_natGrad = 0.00001#None
     clipnorm = 1.0
     
     savefile = "testing.txt"

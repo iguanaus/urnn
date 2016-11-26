@@ -917,7 +917,7 @@ def complex_RNN(n_input, n_hidden, n_output, input_type='real', out_every_t=Fals
    
         if flag_add_input_to_output:
             lin_output = lin_output + x
-    print "The lin output is: " , lin_output
+    #print "The lin output is: " , lin_output
     if not out_every_t:
         #TODO: here, if flag_use_mask is set, need to use a for-loop to select the desired time-step for each utterance
         lin_output = T.dot(hidden_states[-1,:,:], Un) + out_bias.dimshuffle('x', 0)

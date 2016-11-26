@@ -1,9 +1,12 @@
+
+for tval in 100 200 500 1000
+do
 niter=10000
-batch_size=20
-n_hidden=64
-time_steps=100
-learning_rate=0.001
-savefile='exp/memory_problem_complex_RNN_full_complex_RNN_nhidden128_t1000'
+batch_size=128 
+n_hidden=40
+time_steps=$tval
+learning_rate=0.01
+savefile='exp/memory_problem_complex_RNN_full_complex_RNN_nhidden40_t'$time_steps
 model='complex_RNN'
 input_type='categorical'
 out_every_t='True'
@@ -16,3 +19,5 @@ mkdir -p exp
 
 echo $cmd
 eval $cmd
+done
+

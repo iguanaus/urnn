@@ -30,7 +30,8 @@ def generate_data(time_steps, n_data, n_sequence):
     return x.T, y.T
 
     
-def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, input_type, out_every_t, loss_function, w_impl='urnn',n_reflections=None,flag_telescope=True,flag_useGivensForLoop=False):
+def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, input_type, out_every_t, loss_function, w_impl='urnn',n_reflections=None,flag_telescope=True,flag_useGivensForLoop=False,num_cats=8):
+    numcategories = num_cats
 
     # --- Set data params ----------------
     n_input = 10
@@ -209,6 +210,7 @@ if __name__=="__main__":
     parser.add_argument("--flag_telescope", default=True, help="whether to use telescoping reflections (True) or full reflections (False)")
     parser.add_argument("--flag_useGivensForLoop",default=False, help="if True, use a for loop instead of scan to do Givens rotations")
     parser.add_argument("w_impl", default='urnn')
+    parser.add_argument("num_cats",default=8)
 
     args = parser.parse_args()
     dict = vars(args)
@@ -226,6 +228,7 @@ if __name__=="__main__":
               'n_reflections': int(args.n_reflections),
               'flag_telescope': bool(args.flag_telescope),
               'flag_useGivensForLoop': bool(args.flag_useGivensForLoop),
-              'w_impl': dict['w_impl']}
+              'w_impl': dict['w_impl'],
+              'num_cats': dict['num_cats']}
 
     main(**kwargs)

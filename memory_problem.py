@@ -108,6 +108,12 @@ def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, 
         print "Unsuported model:", model
         return
 
+    #Print out the size of things
+    for param in parameters:
+        print param
+        print param.get_value().shape
+
+
  
     # --- Compile theano functions --------------------------------------------------
 

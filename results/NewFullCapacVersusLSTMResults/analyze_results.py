@@ -1,3 +1,19 @@
+'''
+This script plots the results of the LSTM versus the full-capac URNN for several results  returned from their data. On top of this I will graph our results for the different T='s, once I have the results from Li for the new changes.
+Right now it will just show 3 graphs in succession
+Graph 1:
+    T = 100
+    LSTM versus full-capac URNN
+Graph 2:
+    T = 200
+    LSTM versus full-capac URNN
+Graph 3:
+    T = 500
+    LSTM versus full-capac URNN
+
+'''
+
+
 import cPickle
 import gzip
 import theano
@@ -24,6 +40,7 @@ from keras.optimizers import RMSprop
 from keras.utils import np_utils
 import theano
 import matplotlib.pyplot as plt
+
 
 def plot_learning_curve(histfile,label,color='b',flag_plot_train=False,ax=None,T=1000,moreresults=None):
     ax = plt.gca()
@@ -92,7 +109,7 @@ def plot_learning_curve(histfile,label,color='b',flag_plot_train=False,ax=None,T
 
     #ax[1].plot(xval,val_acc,color=color,label=label,linewidth=4)
     ax.set_xlabel('Training Iteration')
-    ax.set_title(label)
+    
     #ax.set_ylabel('Accuracy')
     
     return ax
@@ -115,22 +132,20 @@ def draw_graph_file(input_file):
 
     plt.plot(xvals,yvals,label=input_file)
 
-
-
-
 print ("Analyzing....")
-#plot_learning_curve("exp/history_mnist_default","Full URNN, 510 parameters, 8 Categories, T=100",flag_plot_train=True)
-input_file = "GraphVersion1WithRMSVersusAdam/LSTM_param_7967.txt"
 
-#plot_learning_curve("GraphVersion1WithRMSVersusAdam/urnn_40_100_2","Full URNN, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
-plot_learning_curve("GraphVersion1WithRMSVersusAdam/memory_problem_complex_RNN_full_complex_RNN_nhidden40_t100","Full URNN 2, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
-plot_learning_curve("GraphVersion1WithRMSVersusAdam/mem_complex_2","Full URNN, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
-draw_graph_file(input_file)
-draw_graph_file("GraphVersion1WithRMSVersusAdam/URNN_param_3720.txt")
-draw_graph_file("GraphVersion1WithRMSVersusAdam/UniversalURNN_param_1668.txt")
+for t in [100,200,500]:
+    title = "Time lag = "+str(t) + ", LSTM versus full-capac URNN"
 
-plt.legend()
-plt.show()
+    urnn_file="memory_problem_full_complex_RNN_learning_0.001_nhidden40_t"+str(t)
+    lstm_file="memory_problem_adhoc_LSTM_learning_0.001_nhidden40_t"+str(t)
+
+    ax = plot_learning_curve(urnn_file,"Full URNN T = "+str(t)+", 8 Categories, 1600 parameters",flag_plot_train=True,T=t)
+    ax = plot_learning_curve(lstm_file,"LSTM T = "+str(t)+", 8 Categories, 1600 parameters",flag_plot_train=True,T=t)
+    ax.set_title(title)
+
+    plt.legend()
+    plt.show()
 
 
 

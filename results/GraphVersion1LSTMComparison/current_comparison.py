@@ -1,3 +1,10 @@
+# This graph simply compares the LSTM run by their code, to the LSTM run by our code. 
+# The difference in the baseline scores is attributed to a different number of categories.
+# Theirs is run for 8+2 categories, ours is for 5+2 categories.
+# From this we determined that on a macro level, the codes are returning similar results.
+
+
+
 import cPickle
 import gzip
 import theano
@@ -65,14 +72,14 @@ def plot_learning_curve(histfile,label,color='b',flag_plot_train=False,ax=None,T
     
     #xtrain=np.linspace(0,np.max(xval),train_loss.shape[0])
 
-    plt.plot(xtrain,train_loss,label=label)
+    plt.plot(xtrain,train_loss)
     x = np.arange(0,(int)(len(train_loss)*1.2))*128.0
     def func(x):
         return 10*np.log(8)/(T+20)
     y = [func(i) for i in x]
     #print len(x)
     #print len(y)
-    plt.plot(x,y,label='baseline')
+    plt.plot(x,y)
 
 
     # if flag_plot_train:
@@ -116,20 +123,12 @@ def draw_graph_file(input_file):
     plt.plot(xvals,yvals,label=input_file)
 
 
-
-
 print ("Analyzing....")
 #plot_learning_curve("exp/history_mnist_default","Full URNN, 510 parameters, 8 Categories, T=100",flag_plot_train=True)
-input_file = "GraphVersion1WithRMSVersusAdam/LSTM_param_7967.txt"
+plot_learning_curve("lstm_8570_1000_5","Full URNN compared to LSTM, 1600 parameters, 8 Categories, T=1000",flag_plot_train=True,T=1000)
 
-#plot_learning_curve("GraphVersion1WithRMSVersusAdam/urnn_40_100_2","Full URNN, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
-plot_learning_curve("GraphVersion1WithRMSVersusAdam/memory_problem_complex_RNN_full_complex_RNN_nhidden40_t100","Full URNN 2, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
-plot_learning_curve("GraphVersion1WithRMSVersusAdam/mem_complex_2","Full URNN, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
-draw_graph_file(input_file)
-draw_graph_file("GraphVersion1WithRMSVersusAdam/URNN_param_3720.txt")
-draw_graph_file("GraphVersion1WithRMSVersusAdam/UniversalURNN_param_1668.txt")
+draw_graph_file("LSTM_param_69253.txt")
 
-plt.legend()
 plt.show()
 
 

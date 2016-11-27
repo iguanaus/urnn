@@ -1,3 +1,17 @@
+#This was the first graph that we generated comparing the full-capacity to our GURNN. Inspecting this graph revealed that we had a number of differences in our code that caused serious statistically significant differences in the results.
+#Things that are different:
+
+#       They use RMS prop
+#       They use Bengio's style of initiatlization
+
+# Full URNN 2 - their full-capacity, but with a 0.01 learning rate
+# baseline - baseline for 8 categories (10*log(8)/(T+20))
+# Full URNN - their full-capacity, matching learning rate
+# baseline - same baseline as above
+# LSTM_param_7967.txt - lstm (our result)
+# UniversalURNN - universal urnn bengio result.
+
+
 import cPickle
 import gzip
 import theano
@@ -120,14 +134,14 @@ def draw_graph_file(input_file):
 
 print ("Analyzing....")
 #plot_learning_curve("exp/history_mnist_default","Full URNN, 510 parameters, 8 Categories, T=100",flag_plot_train=True)
-input_file = "GraphVersion1WithRMSVersusAdam/LSTM_param_7967.txt"
+input_file = "LSTM_param_7967.txt"
 
-#plot_learning_curve("GraphVersion1WithRMSVersusAdam/urnn_40_100_2","Full URNN, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
-plot_learning_curve("GraphVersion1WithRMSVersusAdam/memory_problem_complex_RNN_full_complex_RNN_nhidden40_t100","Full URNN 2, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
-plot_learning_curve("GraphVersion1WithRMSVersusAdam/mem_complex_2","Full URNN, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
+#plot_learning_curve("urnn_40_100_2","Full URNN, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
+plot_learning_curve("memory_problem_complex_RNN_full_complex_RNN_nhidden40_t100","Full URNN 2, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
+plot_learning_curve("mem_complex_2","Full URNN, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
 draw_graph_file(input_file)
-draw_graph_file("GraphVersion1WithRMSVersusAdam/URNN_param_3720.txt")
-draw_graph_file("GraphVersion1WithRMSVersusAdam/UniversalURNN_param_1668.txt")
+draw_graph_file("URNN_param_3720.txt")
+draw_graph_file("UniversalURNN_param_1668.txt")
 
 plt.legend()
 plt.show()

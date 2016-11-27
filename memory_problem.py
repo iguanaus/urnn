@@ -31,7 +31,7 @@ def generate_data(time_steps, n_data, n_sequence):
 
     
 def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, input_type, out_every_t, loss_function, w_impl='urnn',n_reflections=None,flag_telescope=True,flag_useGivensForLoop=False,num_cats=8):
-    numcategories = num_cats
+    numcategories = int(num_cats)
 
     # --- Set data params ----------------
     n_input = 10

@@ -5,7 +5,7 @@ Files:
 
   memory_problem_complex_RNN_full_complex_RNN_nhidden40_t100
       run_memory_100.sh
-      This is a set of runs for the paper. These settings match our designations and Bengios
+      This is a set of runs for the paper. These settings match our designations and Bengios. This has 8+2 categories. Learning rate was set to 0.01 for all of these. I need to redo. 
   memory_problem_complex_RNN_full_complex_RNN_nhidden40_t200
   
   memory_problem_complex_RNN_full_complex_RNN_nhidden40_t500

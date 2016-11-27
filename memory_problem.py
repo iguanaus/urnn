@@ -14,12 +14,14 @@ import sys
 sys.setrecursionlimit(50000)
 
 numcategories = 8#This is the total number of categories (not including the +2). Interesting that they are 2 higher. Hrm......
+#Wait just kidding so a 9 would have just been 1,2,3,4,5,6,7,8 (8 categories)
 
+#The reason this has to be +1 is because python truncates the highest one. 
 def generate_data(time_steps, n_data, n_sequence):
-    seq = np.random.randint(1, high=(numcategories-1), size=(n_data, n_sequence))
+    seq = np.random.randint(1, high=(numcategories+1), size=(n_data, n_sequence))
     zeros1 = np.zeros((n_data, time_steps-1))
     zeros2 = np.zeros((n_data, time_steps))
-    marker = (numcategories-1) * np.ones((n_data, 1))
+    marker = (numcategories+1) * np.ones((n_data, 1))
     zeros3 = np.zeros((n_data, n_sequence))
 
     x = np.concatenate((seq, zeros1, marker, zeros3), axis=1).astype('int32')
@@ -32,7 +34,7 @@ def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, 
 
     # --- Set data params ----------------
     n_input = 10
-    n_output = 9
+    n_output = (numcategories+1)
     n_sequence = 10
     n_train = int(1e5)
     n_test = int(1e4)

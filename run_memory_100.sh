@@ -1,12 +1,12 @@
-
+#This will generate the full-capac URNN for T=100,200,and 500
 for tval in 100 200 500
 do
 niter=10000
 batch_size=128 
 n_hidden=40
 time_steps=$tval
-learning_rate=0.01
-savefile='exp/memory_problem_complex_RNN_full_complex_RNN_8cateogires_nhidden40_t'$time_steps
+learning_rate=0.001
+savefile='exp/memory_problem_full_complex_RNN_learning_0.001_nhidden40_t'$time_steps
 model='complex_RNN'
 input_type='categorical'
 out_every_t='True'

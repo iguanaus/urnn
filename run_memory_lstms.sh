@@ -1,12 +1,12 @@
-
-for tval in 100 200 500 1000
+#This will generate the LSTM data for T=100,200, and 500
+for tval in 100 200 500
 do
 niter=10000
 batch_size=128 
 n_hidden=40
 time_steps=$tval
-learning_rate=0.01
-savefile='exp/memory_problem_complex_RNN_adhoc_LSTM_nhidden'$n_hidden'_t'$time_steps
+learning_rate=0.001
+savefile='exp/memory_problem_adhoc_LSTM_learning_0.001_nhidden'$n_hidden'_t'$time_steps
 model='LSTM'
 input_type='categorical'
 out_every_t='True'

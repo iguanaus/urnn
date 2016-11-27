@@ -1,0 +1,14 @@
+Files:
+  memory_problem_complex_RNN_full_complex_RNN_nhidden128_t1000
+      Will be deleted
+  
+
+  memory_problem_complex_RNN_full_complex_RNN_nhidden40_t100
+      run_memory_100.sh
+      This is a set of runs for the paper. These settings match our designations and Bengios
+  memory_problem_complex_RNN_full_complex_RNN_nhidden40_t200
+  
+  memory_problem_complex_RNN_full_complex_RNN_nhidden40_t500
+  
+  memory_problem_complex_RNN_full_complex_RNN_nhidden40_t1000
+  

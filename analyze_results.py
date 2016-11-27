@@ -128,7 +128,7 @@ print ("Analyzing....")
 input_file = "exp/LSTM_param_7967.txt"
 
 #plot_learning_curve("exp/urnn_40_100_2","Full URNN, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
-#plot_learning_curve("exp/urnn_40_100_3","Full URNN, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
+plot_learning_curve("exp/memory_problem_complex_RNN_full_complex_RNN_nhidden40_t100","Full URNN 2, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
 plot_learning_curve("exp/mem_complex_2","Full URNN, 1600 parameters, 8 Categories, T=100",flag_plot_train=True,T=100)
 draw_graph_file(input_file)
 draw_graph_file("exp/URNN_param_3720.txt")

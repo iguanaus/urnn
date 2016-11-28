@@ -138,14 +138,15 @@ def draw_graph_file(input_file):
 
 print ("Analyzing....")
 
-for t in [100,200,500]:
+for t in [1000]:
     title = "Time lag = "+str(t) + ", LSTM versus full-capac URNN"
 
-    urnn_file="memory_problem_full_complex_RNN_learning_0.001_nhidden40_t"+str(t)
-    lstm_file="memory_problem_adhoc_LSTM_learning_0.001_nhidden40_t"+str(t)
+    urnn_file="memory_problem_full_complex_RNN_learning_0.001_ncats_5_nhidden40_t"+str(t)
+    lstm_file="memory_problem_adhoc_lstms_learning_0.001_ncats_5_nhidden40_t"+str(t)
 
-    bengio_file="memory_problem_adhoc_URNN_learning_0.001_nhidden128_t"+str(t)
+    bengio_file="memory_problem_adhoc_complex_RNN_learning_0.001_ncats_5_nhidden40_t"+str(t)
 
+    
     ax = plot_learning_curve(urnn_file,"Full URNN T = "+str(t)+", 8 Categories, N=40",flag_plot_train=True,T=t,plotbaseline=False)
     ax = plot_learning_curve(lstm_file,"LSTM T = "+str(t)+", 8 Categories, N=40",flag_plot_train=True,T=t,plotbaseline=False)
     ax= plot_learning_curve(bengio_file,"Restricted URNN (Bengio) T = " + str(t) + ", 8 catergories, N=128",plotbaseline=True,T=t)

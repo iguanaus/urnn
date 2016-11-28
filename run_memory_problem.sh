@@ -1,5 +1,5 @@
 #!/bin/bash
-niter=10000
+niter=3000
 batch_size=20
 learning_rate=0.001
 

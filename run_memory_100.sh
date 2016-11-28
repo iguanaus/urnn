@@ -3,7 +3,7 @@ for tval in 100 200 500
 do
 niter=10000
 batch_size=128 
-n_hidden=40
+n_hidden=128
 time_steps=$tval
 learning_rate=0.001
 savefile='exp/memory_problem_full_complex_RNN_learning_0.001_nhidden40_t'$time_steps

@@ -1,18 +1,7 @@
 '''
-This script plots the results of the LSTM versus the full-capac URNN for several results  returned from their data. On top of this I will graph our results for the different T='s, once I have the results from Li for the new changes.
-Right now it will just show 3 graphs in succession
-Graph 1:
-    T = 100
-    LSTM versus full-capac URNN
-Graph 2:
-    T = 200
-    LSTM versus full-capac URNN
-Graph 3:
-    T = 500
-    LSTM versus full-capac URNN
+This script plots the results of the full capacity paper. The intention is to just make sure everything is working correctly. 
 
 
-Adhoc for 500 will need to be replaced.
 
 '''
 
@@ -81,14 +70,15 @@ def plot_learning_curve(histfile,label,color='b',flag_plot_train=False,ax=None,T
 
     xval=np.arange(train_loss.shape[0])
 
-    xtrain = np.array(range(0,len(train_loss)))*128.0
+    xtrain = np.array(range(0,len(train_loss)))*20.0
     
     #xtrain=np.linspace(0,np.max(xval),train_loss.shape[0])
 
     plt.plot(xtrain,train_loss,label=label)
-    x = np.arange(0,(int)(len(train_loss)*1.2))*128.0
+    x = np.arange(0,(int)(len(train_loss)*1.2))*20.0
+    num_categories=8#8+2
     def func(x):
-        return 10*np.log(5)/(T+20)
+        return 10*np.log(num_categories)/(T+20)
     y = [func(i) for i in x]
     #print len(x)
     #print len(y)
@@ -141,15 +131,15 @@ print ("Analyzing....")
 for t in [1000]:
     title = "Time lag = "+str(t) + ", LSTM versus full-capac URNN"
 
-    urnn_file="memory_problem_full_complex_RNN_learning_0.001_ncats_5_nhidden40_t"+str(t)
-    lstm_file="memory_problem_adhoc_lstms_learning_0.001_ncats_5_nhidden40_t"+str(t)
+    urnn_file="memory_problem_complex_RNN_full_complex_RNN_nhidden128_t"+str(t)
+    lstm_file="memory_problem_LSTM_adhoc_LSTM_nhidden68_t"+str(t)
 
-    bengio_file="memory_problem_adhoc_complex_RNN_learning_0.001_ncats_5_nhidden40_t"+str(t)
+    bengio_file="memory_problem_complex_RNN_adhoc_complex_RNN_nhidden470_t"+str(t)
 
     
-    ax = plot_learning_curve(urnn_file,"Full URNN T = "+str(t)+", 8 Categories, N=40",flag_plot_train=True,T=t,plotbaseline=False)
-    ax = plot_learning_curve(lstm_file,"LSTM T = "+str(t)+", 8 Categories, N=40",flag_plot_train=True,T=t,plotbaseline=False)
-    ax= plot_learning_curve(bengio_file,"Restricted URNN (Bengio) T = " + str(t) + ", 8 catergories, N=128",plotbaseline=True,T=t)
+    ax = plot_learning_curve(urnn_file,"Full URNN T = "+str(t)+", 8 Categories, N=128",flag_plot_train=True,T=t,plotbaseline=False)
+    ax = plot_learning_curve(lstm_file,"LSTM T = "+str(t)+", 8 Categories, N=68",flag_plot_train=True,T=t,plotbaseline=False)
+    ax= plot_learning_curve(bengio_file,"Restricted URNN (Bengio) T = " + str(t) + ", 8 catergories, N=470",plotbaseline=True,T=t)
     ax.set_title(title)
 
     plt.legend()

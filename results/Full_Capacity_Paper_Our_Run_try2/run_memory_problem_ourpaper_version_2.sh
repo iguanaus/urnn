@@ -1,12 +1,12 @@
 #!/bin/bash
-niter=500
+niter=1500
 batch_size=128
 learning_rate=0.001
 n_cats=8
 mkdir -p exp
 
-for t in 1000 2000; do
-    for model in LSTM,40,adhoc complex_RNN,128,full complex_RNN,65,adhoc ; do IFS=","; set $model
+for t in 1000; do
+    for model in complex_RNN,65,full complex_RNN,128,adhoc LSTM,40,adhoc ; do IFS=","; set $model
         SECONDS=0
         w_impl=$3
         echo "Running memory_problem experiment for N=$2 $1 with time_steps=$t"

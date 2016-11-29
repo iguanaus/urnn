@@ -77,12 +77,12 @@ def plot_learning_curve(histfile,label,color='b',flag_plot_train=False,ax=None,T
 
     xval=np.arange(train_loss.shape[0])
 
-    xtrain = np.array(range(0,len(train_loss)))*20.0
+    xtrain = np.array(range(0,len(train_loss)))*128.0
     
     #xtrain=np.linspace(0,np.max(xval),train_loss.shape[0])
 
     plt.plot(xtrain,train_loss,label=label)
-    x = np.arange(0,(int)(len(train_loss)*1.2))*20.0
+    x = np.arange(0,(int)(len(train_loss)*1.2))*128.0
     num_categories=8#8+2
     def func(x):
         return 10*np.log(num_categories)/(T+20)
@@ -145,8 +145,8 @@ for t in [1000]:
 
     
     ax = plot_learning_curve(urnn_file,"Full URNN T = "+str(t)+", 8 Categories, N=128",flag_plot_train=True,T=t,plotbaseline=False)
-    ax = plot_learning_curve(lstm_file,"LSTM T = "+str(t)+", 8 Categories, N=68",flag_plot_train=True,T=t,plotbaseline=False)
-    ax= plot_learning_curve(bengio_file,"Restricted URNN (Bengio) T = " + str(t) + ", 8 catergories, N=470",plotbaseline=True,T=t)
+    ax = plot_learning_curve(lstm_file,"LSTM T = "+str(t)+", 8 Categories, N=40",flag_plot_train=True,T=t,plotbaseline=False)
+    ax= plot_learning_curve(bengio_file,"Restricted URNN (Bengio) T = " + str(t) + ", 8 catergories, N=65",plotbaseline=True,T=t)
     ax.set_title(title)
 
     plt.legend()

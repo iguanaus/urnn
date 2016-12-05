@@ -61,6 +61,11 @@ def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, 
  
     gradient_clipping = np.float32(1)
 
+    if (model == 'bengio_rnn'):
+        inputs,parameters,costs = bengio_RNN(n_input,n_hidden,n_output,input_type=input_type,out_every_t=out_every_t,loss_function=loss_function)
+        #Gets all gradients, yea its that good.
+        gradients = T.grad(costs[0],parameters)
+
     if (model == 'LSTM'):           
         inputs, parameters, costs = LSTM(n_input, n_hidden, n_output, input_type=input_type,
                                          out_every_t=out_every_t, loss_function=loss_function)
@@ -196,19 +201,19 @@ def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(
         description="training a model")
-    parser.add_argument("n_iter", type=int, default=20000)
-    parser.add_argument("n_batch", type=int, default=20)
-    parser.add_argument("n_hidden", type=int, default=512)
-    parser.add_argument("time_steps", type=int, default=200)
+    parser.add_argument("n_iter", type=int, default=1000)
+    parser.add_argument("n_batch", type=int, default=10)
+    parser.add_argument("n_hidden", type=int, default=20)
+    parser.add_argument("time_steps", type=int, default=20)
     parser.add_argument("learning_rate", type=float, default=0.001)
     parser.add_argument("savefile")
-    parser.add_argument("model", default='complex_RNN')
+    parser.add_argument("model", default='bengio_RNN')
     parser.add_argument("input_type", default='categorical')
     parser.add_argument("out_every_t", default='False')
-    parser.add_argument("loss_function", default='MSE')
-    parser.add_argument("--n_reflections", default=8, help="number of reflections for CUE-RNN")
-    parser.add_argument("--flag_telescope", default=True, help="whether to use telescoping reflections (True) or full reflections (False)")
-    parser.add_argument("--flag_useGivensForLoop",default=False, help="if True, use a for loop instead of scan to do Givens rotations")
+    parser.add_argument("loss_function", default='CE')
+    # parser.add_argument("--n_reflections", default=8, help="number of reflections for CUE-RNN")
+    # parser.add_argument("--flag_telescope", default=True, help="whether to use telescoping reflections (True) or full reflections (False)")
+    # parser.add_argument("--flag_useGivensForLoop",default=False, help="if True, use a for loop instead of scan to do Givens rotations")
     parser.add_argument("w_impl", default='urnn')
     parser.add_argument("num_cats",default=8)
 

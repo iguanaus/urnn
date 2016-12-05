@@ -569,7 +569,6 @@ def times_unitary(x,n,swap_re_im,Wparams,Wimpl):
         y = T.dot(x,Waug)
     return y
 
-
 def complex_RNN(n_input, n_hidden, n_output, input_type='real', out_every_t=False, loss_function='CE', output_type='real', fidx=None, flag_return_lin_output=False,name_suffix='',x_spec=None,flag_feed_forward=False,flag_use_mask=False,hidden_bias_mean=0.0,lam=0.0,Wimpl="adhoc",prng_Givens=np.random.RandomState(),Vnorm=0.0,Unorm=0.0,flag_return_hidden_states=False,n_layers=1,cost_weight=None,cost_transform=None,flag_noComplexConstraint=0,seed=1234,V_init='rand',U_init='rand',W_init='rand',h_0_init='rand',out_bias_init='rand',hidden_bias_init='rand',flag_add_input_to_output=False):
 
     np.random.seed(seed)

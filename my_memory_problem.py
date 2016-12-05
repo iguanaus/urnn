@@ -6,8 +6,9 @@ from fftconv import cufft, cuifft
 import numpy as np
 import theano.tensor as T
 from theano.ifelse import ifelse
-from models import *
 from optimizations import *    
+import myutils;
+from our_models import *
 import argparse, timeit
 #allow bigger graphs (Python's default setting of 1000 for modern computers [https://github.com/Theano/Theano/issues/689]):
 import sys 
@@ -199,25 +200,30 @@ def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, 
 
             
 if __name__=="__main__":
+    print "Done"
     parser = argparse.ArgumentParser(
         description="training a model")
     parser.add_argument("--n_iter", type=int, default=1000)
-    parser.add_argument("n_batch", type=int, default=10)
-    parser.add_argument("n_hidden", type=int, default=20)
-    parser.add_argument("time_steps", type=int, default=20)
-    parser.add_argument("learning_rate", type=float, default=0.001)
-    parser.add_argument("savefile")
-    parser.add_argument("model", default='bengio_RNN')
-    parser.add_argument("input_type", default='categorical')
-    parser.add_argument("out_every_t", default='False')
-    parser.add_argument("loss_function", default='CE')
+    parser.add_argument("--n_batch", type=int, default=10)
+    parser.add_argument("--n_hidden", type=int, default=20)
+    parser.add_argument("--time_steps", type=int, default=20)
+    parser.add_argument("--learning_rate", type=float, default=0.001)
+    parser.add_argument("--savefile", default = 'oldtest')
+    parser.add_argument("--model", default='bengio_RNN')
+    parser.add_argument("--input_type", default='categorical')
+    parser.add_argument("--out_every_t", default='True')
+    parser.add_argument("--loss_function", default='CE')
+    print "Try 2"
     # parser.add_argument("--n_reflections", default=8, help="number of reflections for CUE-RNN")
     # parser.add_argument("--flag_telescope", default=True, help="whether to use telescoping reflections (True) or full reflections (False)")
     # parser.add_argument("--flag_useGivensForLoop",default=False, help="if True, use a for loop instead of scan to do Givens rotations")
-    parser.add_argument("w_impl", default='urnn')
-    parser.add_argument("num_cats",default=8)
+    parser.add_argument("--w_impl", default='urnn_adhoc')
+    parser.add_argument("--num_cats",default=8)
+    print "Rollin"
 
     args = parser.parse_args()
+    print "Through parser"
+
     dict = vars(args)
 
     kwargs = {'n_iter': dict['n_iter'],
@@ -230,10 +236,11 @@ if __name__=="__main__":
               'input_type': dict['input_type'],
               'out_every_t': 'True'==dict['out_every_t'],
               'loss_function': dict['loss_function'],
-              'n_reflections': int(args.n_reflections),
-              'flag_telescope': bool(args.flag_telescope),
-              'flag_useGivensForLoop': bool(args.flag_useGivensForLoop),
               'w_impl': dict['w_impl'],
               'num_cats': dict['num_cats']}
+
+    #main(parser.n_iter,parser.n_batch,parser.n_hidden,parser.time_steps,parser.learning_rate,parser.savefile,parser)
+
+
 
     main(**kwargs)

@@ -923,7 +923,7 @@ def complex_RNN(n_input, n_hidden, n_output, input_type='real', out_every_t=Fals
         z_t = None
         if loss_function == 'MSEplusL1':
             z_t = hidden_states[-1,:,:]
-	print "Y:",y
+            print "Y:",y
         costs = compute_cost_t(lin_output, loss_function, y, z_t=z_t, lam=lam)
         cost=costs[0]
         accuracy=costs[1]

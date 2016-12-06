@@ -5,7 +5,7 @@ from fftconv import cufft, cuifft
 
 
 #This initializes a n_in by n_out matrix and sets its name
-def initialize_matrix(n_in,n_out,name,init='rand'):
+def initialize_matrix(n_in,n_out,name,rng=None,init='rand'):
     if (init=='rand'):
         sigma = np.sqrt(6. / (n_in+n_out))
         values = np.asarray(np.random.uniform(low=-sigma,high=sigma,size=(n_in,n_out)),dtype=theano.config.floatX)
@@ -13,7 +13,7 @@ def initialize_matrix(n_in,n_out,name,init='rand'):
 
 #This creates a unitary matrix based on Bengio's paper. This is just an initialize thingy.
 #I assume that this is adhoc
-def initialize_unitary(dim_size,name ="H"):
+def initialize_unitary(dim_size,impl="",rng=None,name ="H"):
     r_mat=initialize_matrix(2,2*dim_size,name+'_reflection')
     sigma = np.pi#From bengio
     #I don't fully get what this is/why it is what it is. Why is it size 3 X n?
@@ -33,7 +33,7 @@ def initialize_unitary(dim_size,name ="H"):
 
 
 
-def initialize_complex_RNN_layer(n_hidden,hidden_bias_mean=0,name="H"):
+def initialize_complex_RNN_layer(n_hidden,Wimpl="",rng=None,hidden_bias_mean=0,name_suffix="H",hidden_bias_init=None,h_0_init=None,W_init=None):
     sigma = 0.01
     #Get the bias of recurrent iterations
     hidden_bias_values = np.asarray(hidden_bias_mean+np.random.uniform(low=-sigma,high=sigma,size=(n_hidden,1)),dtype=theano.config.floatX)
@@ -122,7 +122,7 @@ def do_fft(input, n_hidden):
     return output
 
 #I will use Bengio's method
-def times_unitary(x,n,swap_re_im,Wparams):
+def times_unitary(x,n,swap_re_im,Wparams,Wimpl=""):
     theta=Wparams[0]
     reflection=Wparams[1]
     index_permute_long=Wparams[2]
@@ -135,7 +135,7 @@ def times_unitary(x,n,swap_re_im,Wparams):
     step7 = times_reflection(step6, n, reflection[1,:])
     step8 = times_diag(step7, n, theta[2,:], swap_re_im)     
     y = step8
-    return T.dot(x,Wparams[0])
+    return y
 
 
 #This is averaged?!?!??!?!?!?

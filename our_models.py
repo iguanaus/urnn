@@ -146,16 +146,17 @@ def bengio_RNN(n_input,n_hidden,n_output,input_type='real',out_every_t=False,los
     return [x,y],parameters,costs
 
 if __name__=="__main__":
-    x_t = 
-    y_t = 
-    ymask_t = 
-    h_prev = 
-    cost_prev =
-    acc_prev = 
-    V = 
-    hidden_bias = 
-    out_bias = 
-    U =
+    print "Hi"
+    #x_t = 
+    #y_t = 
+    #ymask_t = 
+    #h_prev = 
+    #cost_prev =
+    #acc_prev = 
+    #V = 
+    #hidden_bias = 
+    #out_bias = 
+    #U =
     
 
 

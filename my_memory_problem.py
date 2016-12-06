@@ -62,7 +62,7 @@ def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, 
  
     gradient_clipping = np.float32(1)
 
-    if (model == 'bengio_rnn'):
+    if (model == 'bengio_RNN'):
         inputs,parameters,costs = bengio_RNN(n_input,n_hidden,n_output,input_type=input_type,out_every_t=out_every_t,loss_function=loss_function)
         #Gets all gradients, yea its that good.
         gradients = T.grad(costs[0],parameters)

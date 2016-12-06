@@ -304,7 +304,9 @@ def complex_RNN(n_input, n_hidden, n_output, input_type='real', out_every_t=Fals
     parameters = parameters + addl_layers_params_optim
 
     # initialize data nodes
+    print "Every t: " , out_every_t
     x, y = initialize_data_nodes(loss_function, input_type, out_every_t)
+    print "My x: " , x
     if flag_use_mask:
         if 'CE' in loss_function:
             ymask = T.matrix(dtype='int8') if out_every_t else T.vector(dtype='int8')
@@ -439,7 +441,7 @@ def complex_RNN(n_input, n_hidden, n_output, input_type='real', out_every_t=Fals
     
             if flag_add_input_to_output:
                 lin_output=lin_output + x_t 
-
+	    print "Lin output: " , lin_output.ndim
             if flag_use_mask:
                 cost_t, acc_t = compute_cost_t(lin_output, loss_function, y_t, ymask_t=ymask_t, z_t=z_t, lam=lam)
             else:
@@ -477,6 +479,7 @@ def complex_RNN(n_input, n_hidden, n_output, input_type='real', out_every_t=Fals
 
     outputs_info=[h_0_batch, theano.shared(np.float32(0.0)), theano.shared(np.float32(0.0))]
     print "Scanning...." 
+    print sequences
     [hidden_states_all_layers, cost_steps, acc_steps], updates = theano.scan(fn=recurrence,
                                                                       sequences=sequences,
                                                                       non_sequences=non_sequences,

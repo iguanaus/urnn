@@ -50,7 +50,10 @@ def initialize_complex_RNN_layer(n_hidden,Wimpl="",rng=None,hidden_bias_mean=0,n
 
 #This sets up the input nodes. They are just empty placeholders right now.
 def initialize_data_nodes(loss_function,input_type,out_every_t):
-    x = T.tensor3()
+    if input_type == 'real' or input_type == 'complex':
+    	x = T.tensor3()
+    else:
+	x = T.matrix(dtype='int32')
     if 'CE' in loss_function:
         if (out_every_t):
             y = T.matrix(dtype='int32')

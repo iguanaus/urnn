@@ -218,7 +218,7 @@ if __name__=="__main__":
     # parser.add_argument("--n_reflections", default=8, help="number of reflections for CUE-RNN")
     # parser.add_argument("--flag_telescope", default=True, help="whether to use telescoping reflections (True) or full reflections (False)")
     # parser.add_argument("--flag_useGivensForLoop",default=False, help="if True, use a for loop instead of scan to do Givens rotations")
-    parser.add_argument("--w_impl", default='urnn_full')
+    parser.add_argument("--w_impl", default='urnn_adhoc')
     parser.add_argument("--num_cats",default=8)
     print "Rollin"
 

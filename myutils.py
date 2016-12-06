@@ -36,8 +36,8 @@ def initialize_unitary(dim_size,impl="",rng=None,name ="H"):
 def initialize_complex_RNN_layer(n_hidden,Wimpl="",rng=None,hidden_bias_mean=0,name_suffix="H",hidden_bias_init=None,h_0_init=None,W_init=None):
     sigma = 0.01
     #Get the bias of recurrent iterations
-    hidden_bias_values = np.asarray(hidden_bias_mean+np.random.uniform(low=-sigma,high=sigma,size=(n_hidden,1)),dtype=theano.config.floatX)
-    hidden_bias = theano.shared(hidden_bias_values,name=name+"_bias")
+    hidden_bias_values = np.asarray(hidden_bias_mean+np.random.uniform(low=-sigma,high=sigma,size=(n_hidden,)),dtype=theano.config.floatX)
+    hidden_bias = theano.shared(hidden_bias_values,name=name_suffix+"_bias")
     #Get the main matrix initial state. This will be N parameters, but we will normalize each to 1 so we actually need to generate 2*N values right now.
     hidden_size=(1,2*n_hidden)
     sigma = np.sqrt(3./2/n_hidden) #Bengio method
@@ -45,7 +45,7 @@ def initialize_complex_RNN_layer(n_hidden,Wimpl="",rng=None,hidden_bias_mean=0,n
 
     #Now these are the initial states. Note that they are ordered just as one list of size 1x 2*N, so I will have to figure out how to process this/which parts are the imag/real parts
 
-    hidden_to_hidden_matrix = initialize_unitary(n_hidden,name=name)
+    hidden_to_hidden_matrix = initialize_unitary(n_hidden,name=name_suffix)
     return hidden_bias, h_0, hidden_to_hidden_matrix
 
 #This sets up the input nodes. They are just empty placeholders right now.
@@ -139,7 +139,7 @@ def times_unitary(x,n,swap_re_im,Wparams,Wimpl=""):
 
 
 #This is averaged?!?!??!?!?!?
-def compute_cost_t(lin_output,loss_function,y_t):
+def compute_cost_t(lin_output,loss_function,y_t,z_t=0,lam=''):
     RNN_output = T.nnet.softmax(lin_output)
     CE = T.nnet.categorical_crossentropy(RNN_output,y_t)
     cost_t = CE.mean()

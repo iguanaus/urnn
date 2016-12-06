@@ -1,3 +1,4 @@
+from models import *
 import cPickle
 import gzip
 import theano
@@ -38,8 +39,8 @@ def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, 
     n_input = 10
     n_output = (numcategories+1)
     n_sequence = 10
-    n_train = int(1e5)
-    n_test = int(1e4)
+    n_train = int(1e3)
+    n_test = int(1e2)
     num_batches = int(n_train / n_batch)
   
 
@@ -209,7 +210,7 @@ if __name__=="__main__":
     parser.add_argument("--time_steps", type=int, default=20)
     parser.add_argument("--learning_rate", type=float, default=0.001)
     parser.add_argument("--savefile", default = 'oldtest')
-    parser.add_argument("--model", default='bengio_RNN')
+    parser.add_argument("--model", default='complex_RNN')
     parser.add_argument("--input_type", default='categorical')
     parser.add_argument("--out_every_t", default='True')
     parser.add_argument("--loss_function", default='CE')
@@ -217,7 +218,7 @@ if __name__=="__main__":
     # parser.add_argument("--n_reflections", default=8, help="number of reflections for CUE-RNN")
     # parser.add_argument("--flag_telescope", default=True, help="whether to use telescoping reflections (True) or full reflections (False)")
     # parser.add_argument("--flag_useGivensForLoop",default=False, help="if True, use a for loop instead of scan to do Givens rotations")
-    parser.add_argument("--w_impl", default='urnn_adhoc')
+    parser.add_argument("--w_impl", default='urnn_full')
     parser.add_argument("--num_cats",default=8)
     print "Rollin"
 

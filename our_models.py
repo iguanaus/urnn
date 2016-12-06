@@ -90,6 +90,7 @@ def bengio_RNN(n_input,n_hidden,n_output,input_type='real',out_every_t=False,los
 
     if (out_every_t):
         print "My x: " , x
+	print x.shape
         sequences = [x,y,T.tile(theano.shared(np.ones((1,1),dtype=theano.config.floatX)),[x.shape[0],1,1])]
     else:
         sequences = [x,T.tile(theano.shared(np.zeros((1,1),dtype=theano.config.floatX)),[x.shape[0],1,1]),T.tile(theano.shared(np.ones((1,1),dtype=theano.config.floatX)),[x.shape[0],1,1])]

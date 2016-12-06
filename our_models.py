@@ -70,7 +70,8 @@ def bengio_RNN(n_input,n_hidden,n_output,input_type='real',out_every_t=False,los
         #Non linearity
 
         modulus = T.sqrt(1e-5+lin_output**2 + lin_output[:, swap_re_im]**2)
-        rescale = T.maximum(modulus+T.tile(hidden_bias,[2]).dimshuffle('x',0),0.)/(modulus+1e-5)
+        firstval = modulus+T.tile(hidden_bias,[2]).dimshuffle('x',0)
+        rescale = T.maximum(firstval,0.)/(modulus+1e-5)
         h_t = lin_output * rescale
 
         if (out_every_t):
@@ -88,6 +89,7 @@ def bengio_RNN(n_input,n_hidden,n_output,input_type='real',out_every_t=False,los
     non_sequences = [V   , hidden_bias, U_bias, U] + hidden_to_hidden_matrix
 
     if (out_every_t):
+        print "My x: " , x
         sequences = [x,y,T.tile(theano.shared(np.ones((1,1),dtype=theano.config.floatX)),[x.shape[0],1,1])]
     else:
         sequences = [x,T.tile(theano.shared(np.zeros((1,1),dtype=theano.config.floatX)),[x.shape[0],1,1]),T.tile(theano.shared(np.ones((1,1),dtype=theano.config.floatX)),[x.shape[0],1,1])]
@@ -143,41 +145,24 @@ def bengio_RNN(n_input,n_hidden,n_output,input_type='real',out_every_t=False,los
     costs = [cost,accuracy]
     return [x,y],parameters,costs
 
+if __name__=="__main__":
+    x_t = 
+    y_t = 
+    ymask_t = 
+    h_prev = 
+    cost_prev =
+    acc_prev = 
+    V = 
+    hidden_bias = 
+    out_bias = 
+    U =
+    
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-bengio_RNN(5,8,2,input_type='real',out_every_t=True,loss_function='CE')
+#bengio_RNN(5,8,2,input_type='real',out_every_t=True,loss_function='CE')
 
 
 

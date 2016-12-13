@@ -745,7 +745,7 @@ def complex_RNN(n_input, n_hidden, n_output, input_type='real', out_every_t=Fals
 
     # define the recurrence used by theano.scan
     def recurrence(x_t, y_t, ymask_t, h_prev, cost_prev, acc_prev, V, hidden_bias, out_bias, U, *argv):  
-	   print "My x: " , x_t
+	print "My x: " , x_t
         # h_prev is of size n_batch x n_layers*2*n_hidden
 
         # strip W parameters off variable arguments list

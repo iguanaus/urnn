@@ -204,9 +204,9 @@ if __name__=="__main__":
     print "Done"
     parser = argparse.ArgumentParser(
         description="training a model")
-    parser.add_argument("--n_iter", type=int, default=10000)
-    parser.add_argument("--n_batch", type=int, default=128)
-    parser.add_argument("--n_hidden", type=int, default=40)
+    parser.add_argument("--n_iter", type=int, default=1000)
+    parser.add_argument("--n_batch", type=int, default=16)
+    parser.add_argument("--n_hidden", type=int, default=10)
     parser.add_argument("--time_steps", type=int, default=20)
     parser.add_argument("--learning_rate", type=float, default=0.001)
     parser.add_argument("--savefile", default = 'oldtest_my_mem')

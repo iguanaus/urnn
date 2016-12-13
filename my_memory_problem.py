@@ -71,6 +71,7 @@ def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, 
     if (model == 'LSTM'):           
         inputs, parameters, costs = LSTM(n_input, n_hidden, n_output, input_type=input_type,
                                          out_every_t=out_every_t, loss_function=loss_function)
+        print "Inputs:",inputs
         gradients = T.grad(costs[0], parameters)
         gradients = [T.clip(g, -gradient_clipping, gradient_clipping) for g in gradients]
 

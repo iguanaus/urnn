@@ -338,7 +338,7 @@ def LSTM(n_input, n_hidden, n_output, input_type='real', out_every_t=False, loss
     
     def recurrence(x_t, y_t, ymask_t, h_prev, state_prev, cost_prev, acc_prev,
                    W_i, W_f, W_c, W_o, U_i, U_f, U_c, U_o, V_o, b_i, b_f, b_c, b_o, out_mat, out_bias):
-        
+        print "MY X VALUE: " , x_t
         if (loss_function == 'CE') and (input_type=='categorical'):
             x_t_W_i = W_i[x_t]
             x_t_W_c = W_c[x_t]

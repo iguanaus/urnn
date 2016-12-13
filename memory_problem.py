@@ -65,6 +65,13 @@ def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, 
     if (model == 'LSTM'):           
         inputs, parameters, costs = LSTM(n_input, n_hidden, n_output, input_type=input_type,
                                          out_every_t=out_every_t, loss_function=loss_function)
+        print inputs
+        for ele in inputs:
+            print "Input element:"
+            print ele
+            #print ele.get_shape()
+        print "Donedone"
+
         gradients = T.grad(costs[0], parameters)
         gradients = [T.clip(g, -gradient_clipping, gradient_clipping) for g in gradients]
 
@@ -132,10 +139,19 @@ def main(n_iter, n_batch, n_hidden, time_steps, learning_rate, savefile, model, 
 
     givens = {inputs[0] : s_train_x[:, n_batch * index : n_batch * (index + 1)],
               inputs[1] : s_train_y[:, n_batch * index : n_batch * (index + 1)]}
+    print "My givens test"
 
     givens_test = {inputs[0] : s_test_x,
                    inputs[1] : s_test_y}
-    
+    print givens_test
+    for key, value in givens_test.iteritems():
+        print "Key:" , key , "value:", value, value.get_value(), value.get_value().shape
+
+    #print "my inputs:"
+    #for value in inputs:
+    #    print "value:", value, value.get_shape(), value.get_value(), value.get_value().shape
+
+
    
     train = theano.function([index], costs[0], givens=givens, updates=updates)
     test = theano.function([], [costs[0], costs[1]], givens=givens_test)

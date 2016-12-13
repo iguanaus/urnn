@@ -4,7 +4,7 @@ import numpy as np
 from fftconv import cufft, cuifft
 from myutils import *
 
-
+expTry = False
 
 '''
     Assume this does not have the fast designation
@@ -174,6 +174,7 @@ def complex_RNN(n_input, n_hidden, n_output, input_type='categorical',out_every_
    
     # initialize layer 1 parameters
     hidden_bias, h_0, Wparams = initialize_complex_RNN_layer(n_hidden,Wimpl,rng,hidden_bias_mean,name_suffix=name_suffix,hidden_bias_init=hidden_bias_init,h_0_init=h_0_init,W_init=W_init)
+    
 
     swap_re_im = np.concatenate((np.arange(n_hidden, 2*n_hidden), np.arange(n_hidden)))
       
@@ -215,10 +216,13 @@ def complex_RNN(n_input, n_hidden, n_output, input_type='categorical',out_every_
         # scale RELU nonlinearity
         #  add a little bit to sqrt argument to ensure stable gradients,
         #  since gradient of sqrt(x) is -0.5/sqrt(x)
-        modulus = T.sqrt(1e-5+lin_output**2 + lin_output[:, swap_re_im]**2)
-        rescale = T.maximum(modulus + T.tile(hidden_bias, [2]).dimshuffle('x', 0), 0.) / (modulus + 1e-5)
-        h_t = lin_output * rescale
-     
+        if expTry:
+            pass
+        else:
+            modulus = T.sqrt(1e-5+lin_output**2 + lin_output[:, swap_re_im]**2)
+            rescale = T.maximum(modulus + T.tile(hidden_bias, [2]).dimshuffle('x', 0), 0.) / (modulus + 1e-5)
+            h_t = lin_output * rescale
+         
         h_t_all_layers = h_t
 
         # assume we aren't passing any preactivation to compute_cost

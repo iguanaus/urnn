@@ -12,7 +12,7 @@ for t in 20; do
         SECONDS=0
         w_impl=$3
         echo "Running memory_problem experiment for N=$2 $1 with time_steps=$t"
-        cmd="THEANO_FLAGS='device=gpu0' python2.7 -u memory_problem.py $niter ${batch_size} $2 $t 0.001 exp/memory_problem_$1_$3_$1_nhidden$2_t$t $1 categorical True CE $w_impl $n_cats"
+        cmd="THEANO_FLAGS='device=gpu0' python2.7 -u memory_problem.py --n_iter $niter --n_batch ${batch_size} --n_hidden $2 --time_steps $t --learning_rate 0.001 --savefile exp/memory_problem_$1_$3_$1_nhidden$2_t$t --model $1 --input_type categorical --out_every_t True --loss_function CE --n_reflections $w_impl --num_cats $n_cats"
         echo $cmd
         eval $cmd
         echo "Experiment took $SECONDS seconds."

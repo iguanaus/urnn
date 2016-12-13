@@ -8,7 +8,7 @@ from myutils import *
 
 '''
     Assume this does not have the fast designation
-        full_
+        adhoc
 
 '''
 
@@ -85,7 +85,7 @@ def bengio_RNN(n_input,n_hidden,n_output,input_type='real',out_every_t=False,los
 
     h_0_batch = T.tile(h_0,[x.shape[1],1])
 
-    
+        
     non_sequences = [V   , hidden_bias, U_bias, U] + hidden_to_hidden_matrix
 
     if (out_every_t):
@@ -320,7 +320,7 @@ def complex_RNN(n_input, n_hidden, n_output, input_type='real', out_every_t=Fals
     
 
 
-    # define the recurrence used by theano.scan
+    # define the recurrence used by theano.scan 
     def recurrence(x_t, y_t, ymask_t, h_prev, cost_prev, acc_prev, V, hidden_bias, out_bias, U, *argv):  
     	print "My x: " , x_t
         # h_prev is of size n_batch x n_layers*2*n_hidden

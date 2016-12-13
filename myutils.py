@@ -126,6 +126,7 @@ def do_fft(input, n_hidden):
 
 #I will use Bengio's method
 def times_unitary(x,n,swap_re_im,Wparams,Wimpl=""):
+    print "Wparams time_unitary: " , Wparams
     theta=Wparams[0]
     reflection=Wparams[1]
     index_permute_long=Wparams[2]

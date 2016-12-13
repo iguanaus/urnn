@@ -13,3 +13,9 @@ ToRun:
     run_their_LSTM.sh
     run_memory_lstms.sh
     
+
+Todo:
+    Start just cutting from the working bengio to give a minimalist version
+            20 mins
+    Implement outs.
+    

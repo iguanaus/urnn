@@ -135,22 +135,17 @@ def draw_graph_file(input_file):
 
 print ("Analyzing....")
 
-for t in [20]:
+for t in [200]:
     title = "Time lag = "+str(t) + ", params ~ 6500"
 
 #memory_problem_final_LSTM_adhoc_LSTM_nhidden40_t1000
-    urnn_file  ="memory_problem_complex_RNN_full_complex_RNN_nhidden64_t"+str(t)
-    bengio_file="memory_problem_complex_RNN_adhoc_complex_RNN_nhidden128_t"+str(t)
-
-    lstm_file="memory_problem_LSTM_adhoc_LSTM_nhidden40_t"+str(t)
-
+    urnn_file1="memory_problem_complex_RNN_full_complex_RNN_nhidden64_t"+str(t)
+    urnn_file2="memory_problem_complex_RNN_full_complex_RNN_nhidden128_t"+str(t)
     
-
-    
-    
-    ax = plot_learning_curve(lstm_file,"LSTM T = "+str(t)+", 8 Categories, N=40",flag_plot_train=True,T=t,plotbaseline=False)
-    ax= plot_learning_curve(bengio_file,"Restricted URNN (Bengio) T = " + str(t) + ", 8 catergories, N=128",plotbaseline=False,T=t)
-    ax = plot_learning_curve(urnn_file,"Full URNN T = "+str(t)+", 8 Categories, N=64",flag_plot_train=True,T=t,plotbaseline=True)
+    #ax = plot_learning_curve(lstm_file,"LSTM T = "+str(t)+", 8 Categories, N=40",flag_plot_train=True,T=t,plotbaseline=False)
+    #ax= plot_learning_curve(bengio_file,"Restricted URNN (Bengio) T = " + str(t) + ", 8 catergories, N=128",plotbaseline=False,T=t)
+    ax = plot_learning_curve(urnn_file2,"Full URNN T = "+str(t)+", 8 Categories, N=128",flag_plot_train=True,T=t,plotbaseline=False)
+    ax = plot_learning_curve(urnn_file1,"Full URNN T = "+str(t)+", 8 Categories, N=64",flag_plot_train=True,T=t,plotbaseline=True)
     ax.set_title(title)
 
     plt.legend()

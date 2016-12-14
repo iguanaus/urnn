@@ -60,7 +60,7 @@ def plot_learning_curve(histfile,label,color='b',flag_plot_train=False,ax=None,T
             print ("Can't open file",moreresults,"skipping exp:",label)
             #print ("Can't open history file %s, skipping exp %s" % (histfile,label))
             return ax
-        train_loss=np.asarray(history2['train_loss'])
+        train_loss=np.asarray(history2['accuracy'])
         val_loss=np.asarray(history2['val_loss'])
         val_loss=np.concatenate(([5],val_loss))
         xval=np.arange(val_loss.shape[0])
@@ -71,7 +71,7 @@ def plot_learning_curve(histfile,label,color='b',flag_plot_train=False,ax=None,T
 
 
     
-    train_loss=np.asarray(history['train_loss'])
+    train_loss=np.asarray(history['train_acc'])
     #val_loss=np.asarray(history['val_loss'])
     #val_loss=np.concatenate(([5],val_loss))
 
@@ -98,7 +98,7 @@ def plot_learning_curve(histfile,label,color='b',flag_plot_train=False,ax=None,T
     # ax[0].plot(xval,val_loss,color=color,label=label,linewidth=4)
     # ax[0].set_xlabel('Epoch')
     
-    ax.set_ylabel('Loss (cross-entropy)')
+    ax.set_ylabel('Accuracy')
     #ax.set_ylim((0.0,1.))
     
     # train_acc=np.asarray(history['train_acc'])
@@ -136,16 +136,16 @@ def draw_graph_file(input_file):
 print ("Analyzing....")
 
 for t in [200]:
-    title = "Time lag = "+str(t) + ", params ~ 6500"
+    title = "MNIST Classification"
 
 #memory_problem_final_LSTM_adhoc_LSTM_nhidden40_t1000
-    full_file="memory_problem_complex_RNN_full_complex_RNN_nhidden64_t"+str(t)
-    lstm_file="memory_problem_LSTM_adhoc_LSTM_nhidden40_t"+str(t)
+    full_file="history_mnist_fulluRNN64_lr0-001_lrng0-000001_patience5_natGradRMS"
+    lstm_file="history_mnist_LSTM40_lr0-001_patience5"
 
-    bengio_file="memory_problem_complex_RNN_adhoc_complex_RNN_nhidden128_t"+str(t)    
-    ax = plot_learning_curve(lstm_file,"LSTM T = "+str(t)+", 8 Categories, N=40",flag_plot_train=True,T=t,plotbaseline=False)
-    ax= plot_learning_curve(bengio_file,"Restricted URNN (Bengio) T = " + str(t) + ", 8 catergories, N=128",plotbaseline=False,T=t)
-    ax = plot_learning_curve(full_file,"Full URNN T = "+str(t)+", 8 Categories, N=64",flag_plot_train=True,T=t,plotbaseline=True)
+    #bengio_file="memory_problem_complex_RNN_adhoc_complex_RNN_nhidden128_t"+str(t)    
+    ax = plot_learning_curve(lstm_file,"LSTM, N=40",flag_plot_train=True,T=t,plotbaseline=False)
+    #ax= plot_learning_curve(bengio_file,"Restricted URNN (Bengio) T = " + str(t) + ", 8 catergories, N=128",plotbaseline=False,T=t)
+    ax = plot_learning_curve(full_file,"Full URNN, 8 Categories, N=64",flag_plot_train=True,T=t,plotbaseline=False)
     ax.set_title(title)
 
     plt.legend()

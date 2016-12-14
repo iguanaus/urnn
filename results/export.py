@@ -4,10 +4,9 @@
 import cPickle
 import numpy as np
 
-T = 20
+T = 200
 batch_size=128
-direc='Copy_T=20_Full_URNN_LSTM_6500params/'
-
+direc='Copy_T=200_Full_URNN_LSTM_6500params/'
 
 filename = "John_Bengio_T="+str(T)+"_6500.txt"
 histfile = direc+"memory_problem_complex_RNN_adhoc_complex_RNN_nhidden128_t"+str(T)
@@ -19,15 +18,13 @@ filename = "Full_Assoc_T="+str(T)+"_6500.txt"
 histfile = direc+'memory_problem_complex_RNN_full_complex_RNN_nhidden64_t'+str(T)
 title="Fully Associative URNN with ~6500 parameters on"
 task="# Copying Task with T="+str(T)
-'''
 
-'''
+
 filename = "John_LSTM_T="+str(T)+"_6500.txt"
 histfile = direc+'memory_problem_LSTM_adhoc_LSTM_nhidden40_t'+str(T)
 title="LSTM with ~6500 parameters on"
 task="# Copying Task with T="+str(T)
 '''
-
 
 beginning_string='########\n\n\tModel: '+str(title)+'\n\n#Task:\n '+str(task)+'\n\n########'
 
